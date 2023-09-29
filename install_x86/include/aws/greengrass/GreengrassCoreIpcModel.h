@@ -21,7 +21,7 @@ namespace Aws
     {
         class GreengrassCoreIpcClient;
         class GreengrassCoreIpcServiceModel;
-        class UserProperty : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API UserProperty : public AbstractShapeBase
         {
           public:
             UserProperty() noexcept {}
@@ -36,7 +36,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(UserProperty *) noexcept;
-            /* This needs to be defined so that `UserProperty` can be used as a key in maps. */
+            /* This needs to be defined so that `UserProperty` can be used as a key in
+             * maps. */
             bool operator<(const UserProperty &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -48,7 +49,16 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_value;
         };
 
-        class MessageContext : public AbstractShapeBase
+        enum DetailedDeploymentStatus
+        {
+            DETAILED_DEPLOYMENT_STATUS_SUCCESSFUL,
+            DETAILED_DEPLOYMENT_STATUS_FAILED_NO_STATE_CHANGE,
+            DETAILED_DEPLOYMENT_STATUS_FAILED_ROLLBACK_NOT_REQUESTED,
+            DETAILED_DEPLOYMENT_STATUS_FAILED_ROLLBACK_COMPLETE,
+            DETAILED_DEPLOYMENT_STATUS_REJECTED
+        };
+
+        class AWS_GREENGRASSCOREIPC_API MessageContext : public AbstractShapeBase
         {
           public:
             MessageContext() noexcept {}
@@ -61,7 +71,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(MessageContext *) noexcept;
-            /* This needs to be defined so that `MessageContext` can be used as a key in maps. */
+            /* This needs to be defined so that `MessageContext` can be used as a key in
+             * maps. */
             bool operator<(const MessageContext &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -88,12 +99,65 @@ namespace Aws
             METRIC_UNIT_TYPE_SECONDS
         };
 
+        class AWS_GREENGRASSCOREIPC_API DeploymentStatusDetails : public AbstractShapeBase
+        {
+          public:
+            DeploymentStatusDetails() noexcept {}
+            DeploymentStatusDetails(const DeploymentStatusDetails &) = default;
+            void SetDetailedDeploymentStatus(DetailedDeploymentStatus detailedDeploymentStatus) noexcept;
+            Aws::Crt::Optional<DetailedDeploymentStatus> GetDetailedDeploymentStatus() noexcept;
+            void SetDeploymentErrorStack(const Aws::Crt::Vector<Aws::Crt::String> &deploymentErrorStack) noexcept
+            {
+                m_deploymentErrorStack = deploymentErrorStack;
+            }
+            Aws::Crt::Optional<Aws::Crt::Vector<Aws::Crt::String>> GetDeploymentErrorStack() noexcept
+            {
+                return m_deploymentErrorStack;
+            }
+            void SetDeploymentErrorTypes(const Aws::Crt::Vector<Aws::Crt::String> &deploymentErrorTypes) noexcept
+            {
+                m_deploymentErrorTypes = deploymentErrorTypes;
+            }
+            Aws::Crt::Optional<Aws::Crt::Vector<Aws::Crt::String>> GetDeploymentErrorTypes() noexcept
+            {
+                return m_deploymentErrorTypes;
+            }
+            void SetDeploymentFailureCause(const Aws::Crt::String &deploymentFailureCause) noexcept
+            {
+                m_deploymentFailureCause = deploymentFailureCause;
+            }
+            Aws::Crt::Optional<Aws::Crt::String> GetDeploymentFailureCause() noexcept
+            {
+                return m_deploymentFailureCause;
+            }
+            void SerializeToJsonObject(Aws::Crt::JsonObject &payloadObject) const noexcept override;
+            static void s_loadFromJsonView(DeploymentStatusDetails &, const Aws::Crt::JsonView &) noexcept;
+            static Aws::Crt::ScopedResource<AbstractShapeBase> s_allocateFromPayload(
+                Aws::Crt::StringView,
+                Aws::Crt::Allocator *) noexcept;
+            static void s_customDeleter(DeploymentStatusDetails *) noexcept;
+            /* This needs to be defined so that `DeploymentStatusDetails` can be used as a
+             * key in maps. */
+            bool operator<(const DeploymentStatusDetails &) const noexcept;
+            static const char *MODEL_NAME;
+
+          protected:
+            Aws::Crt::String GetModelName() const noexcept override;
+
+          private:
+            Aws::Crt::Optional<Aws::Crt::String> m_detailedDeploymentStatus;
+            Aws::Crt::Optional<Aws::Crt::Vector<Aws::Crt::String>> m_deploymentErrorStack;
+            Aws::Crt::Optional<Aws::Crt::Vector<Aws::Crt::String>> m_deploymentErrorTypes;
+            Aws::Crt::Optional<Aws::Crt::String> m_deploymentFailureCause;
+        };
+
         enum DeploymentStatus
         {
             DEPLOYMENT_STATUS_QUEUED,
             DEPLOYMENT_STATUS_IN_PROGRESS,
             DEPLOYMENT_STATUS_SUCCEEDED,
-            DEPLOYMENT_STATUS_FAILED
+            DEPLOYMENT_STATUS_FAILED,
+            DEPLOYMENT_STATUS_CANCELED
         };
 
         enum LifecycleState
@@ -108,7 +172,7 @@ namespace Aws
             LIFECYCLE_STATE_STOPPING
         };
 
-        class SystemResourceLimits : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SystemResourceLimits : public AbstractShapeBase
         {
           public:
             SystemResourceLimits() noexcept {}
@@ -123,7 +187,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SystemResourceLimits *) noexcept;
-            /* This needs to be defined so that `SystemResourceLimits` can be used as a key in maps. */
+            /* This needs to be defined so that `SystemResourceLimits` can be used as a
+             * key in maps. */
             bool operator<(const SystemResourceLimits &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -135,7 +200,7 @@ namespace Aws
             Aws::Crt::Optional<double> m_cpus;
         };
 
-        class ValidateConfigurationUpdateEvent : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ValidateConfigurationUpdateEvent : public AbstractShapeBase
         {
           public:
             ValidateConfigurationUpdateEvent() noexcept {}
@@ -153,7 +218,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ValidateConfigurationUpdateEvent *) noexcept;
-            /* This needs to be defined so that `ValidateConfigurationUpdateEvent` can be used as a key in maps. */
+            /* This needs to be defined so that `ValidateConfigurationUpdateEvent` can be
+             * used as a key in maps. */
             bool operator<(const ValidateConfigurationUpdateEvent &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -165,7 +231,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_deploymentId;
         };
 
-        class BinaryMessage : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API BinaryMessage : public AbstractShapeBase
         {
           public:
             BinaryMessage() noexcept {}
@@ -182,7 +248,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(BinaryMessage *) noexcept;
-            /* This needs to be defined so that `BinaryMessage` can be used as a key in maps. */
+            /* This needs to be defined so that `BinaryMessage` can be used as a key in
+             * maps. */
             bool operator<(const BinaryMessage &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -194,7 +261,7 @@ namespace Aws
             Aws::Crt::Optional<MessageContext> m_context;
         };
 
-        class JsonMessage : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API JsonMessage : public AbstractShapeBase
         {
           public:
             JsonMessage() noexcept {}
@@ -211,7 +278,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(JsonMessage *) noexcept;
-            /* This needs to be defined so that `JsonMessage` can be used as a key in maps. */
+            /* This needs to be defined so that `JsonMessage` can be used as a key in
+             * maps. */
             bool operator<(const JsonMessage &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -223,7 +291,7 @@ namespace Aws
             Aws::Crt::Optional<MessageContext> m_context;
         };
 
-        class MQTTMessage : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API MQTTMessage : public AbstractShapeBase
         {
           public:
             MQTTMessage() noexcept {}
@@ -264,7 +332,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(MQTTMessage *) noexcept;
-            /* This needs to be defined so that `MQTTMessage` can be used as a key in maps. */
+            /* This needs to be defined so that `MQTTMessage` can be used as a key in
+             * maps. */
             bool operator<(const MQTTMessage &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -283,7 +352,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_contentType;
         };
 
-        class ConfigurationUpdateEvent : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ConfigurationUpdateEvent : public AbstractShapeBase
         {
           public:
             ConfigurationUpdateEvent() noexcept {}
@@ -298,7 +367,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ConfigurationUpdateEvent *) noexcept;
-            /* This needs to be defined so that `ConfigurationUpdateEvent` can be used as a key in maps. */
+            /* This needs to be defined so that `ConfigurationUpdateEvent` can be used as
+             * a key in maps. */
             bool operator<(const ConfigurationUpdateEvent &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -310,7 +380,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::Vector<Aws::Crt::String>> m_keyPath;
         };
 
-        class PostComponentUpdateEvent : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API PostComponentUpdateEvent : public AbstractShapeBase
         {
           public:
             PostComponentUpdateEvent() noexcept {}
@@ -323,7 +393,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(PostComponentUpdateEvent *) noexcept;
-            /* This needs to be defined so that `PostComponentUpdateEvent` can be used as a key in maps. */
+            /* This needs to be defined so that `PostComponentUpdateEvent` can be used as
+             * a key in maps. */
             bool operator<(const PostComponentUpdateEvent &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -334,7 +405,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_deploymentId;
         };
 
-        class PreComponentUpdateEvent : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API PreComponentUpdateEvent : public AbstractShapeBase
         {
           public:
             PreComponentUpdateEvent() noexcept {}
@@ -349,7 +420,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(PreComponentUpdateEvent *) noexcept;
-            /* This needs to be defined so that `PreComponentUpdateEvent` can be used as a key in maps. */
+            /* This needs to be defined so that `PreComponentUpdateEvent` can be used as a
+             * key in maps. */
             bool operator<(const PreComponentUpdateEvent &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -361,7 +433,7 @@ namespace Aws
             Aws::Crt::Optional<bool> m_isGgcRestarting;
         };
 
-        class CertificateUpdate : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API CertificateUpdate : public AbstractShapeBase
         {
           public:
             CertificateUpdate() noexcept {}
@@ -386,7 +458,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(CertificateUpdate *) noexcept;
-            /* This needs to be defined so that `CertificateUpdate` can be used as a key in maps. */
+            /* This needs to be defined so that `CertificateUpdate` can be used as a key
+             * in maps. */
             bool operator<(const CertificateUpdate &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -411,7 +484,7 @@ namespace Aws
             CONFIGURATION_VALIDITY_STATUS_REJECTED
         };
 
-        class Metric : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API Metric : public AbstractShapeBase
         {
           public:
             Metric() noexcept {}
@@ -441,7 +514,7 @@ namespace Aws
             Aws::Crt::Optional<double> m_value;
         };
 
-        class LocalDeployment : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API LocalDeployment : public AbstractShapeBase
         {
           public:
             LocalDeployment() noexcept {}
@@ -450,13 +523,24 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> GetDeploymentId() noexcept { return m_deploymentId; }
             void SetStatus(DeploymentStatus status) noexcept;
             Aws::Crt::Optional<DeploymentStatus> GetStatus() noexcept;
+            void SetCreatedOn(const Aws::Crt::String &createdOn) noexcept { m_createdOn = createdOn; }
+            Aws::Crt::Optional<Aws::Crt::String> GetCreatedOn() noexcept { return m_createdOn; }
+            void SetDeploymentStatusDetails(const DeploymentStatusDetails &deploymentStatusDetails) noexcept
+            {
+                m_deploymentStatusDetails = deploymentStatusDetails;
+            }
+            Aws::Crt::Optional<DeploymentStatusDetails> GetDeploymentStatusDetails() noexcept
+            {
+                return m_deploymentStatusDetails;
+            }
             void SerializeToJsonObject(Aws::Crt::JsonObject &payloadObject) const noexcept override;
             static void s_loadFromJsonView(LocalDeployment &, const Aws::Crt::JsonView &) noexcept;
             static Aws::Crt::ScopedResource<AbstractShapeBase> s_allocateFromPayload(
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(LocalDeployment *) noexcept;
-            /* This needs to be defined so that `LocalDeployment` can be used as a key in maps. */
+            /* This needs to be defined so that `LocalDeployment` can be used as a key in
+             * maps. */
             bool operator<(const LocalDeployment &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -466,9 +550,11 @@ namespace Aws
           private:
             Aws::Crt::Optional<Aws::Crt::String> m_deploymentId;
             Aws::Crt::Optional<Aws::Crt::String> m_status;
+            Aws::Crt::Optional<Aws::Crt::String> m_createdOn;
+            Aws::Crt::Optional<DeploymentStatusDetails> m_deploymentStatusDetails;
         };
 
-        class ComponentDetails : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ComponentDetails : public AbstractShapeBase
         {
           public:
             ComponentDetails() noexcept {}
@@ -490,7 +576,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ComponentDetails *) noexcept;
-            /* This needs to be defined so that `ComponentDetails` can be used as a key in maps. */
+            /* This needs to be defined so that `ComponentDetails` can be used as a key in
+             * maps. */
             bool operator<(const ComponentDetails &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -504,7 +591,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::JsonObject> m_configuration;
         };
 
-        class MQTTCredential : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API MQTTCredential : public AbstractShapeBase
         {
           public:
             MQTTCredential() noexcept {}
@@ -526,7 +613,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(MQTTCredential *) noexcept;
-            /* This needs to be defined so that `MQTTCredential` can be used as a key in maps. */
+            /* This needs to be defined so that `MQTTCredential` can be used as a key in
+             * maps. */
             bool operator<(const MQTTCredential &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -540,7 +628,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_password;
         };
 
-        class RunWithInfo : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API RunWithInfo : public AbstractShapeBase
         {
           public:
             RunWithInfo() noexcept {}
@@ -563,7 +651,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(RunWithInfo *) noexcept;
-            /* This needs to be defined so that `RunWithInfo` can be used as a key in maps. */
+            /* This needs to be defined so that `RunWithInfo` can be used as a key in
+             * maps. */
             bool operator<(const RunWithInfo &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -576,7 +665,7 @@ namespace Aws
             Aws::Crt::Optional<SystemResourceLimits> m_systemResourceLimits;
         };
 
-        class ClientDeviceCredential : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ClientDeviceCredential : public AbstractShapeBase
         {
           public:
             ClientDeviceCredential() noexcept {}
@@ -604,7 +693,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ClientDeviceCredential *) noexcept;
-            /* This needs to be defined so that `ClientDeviceCredential` can be used as a key in maps. */
+            /* This needs to be defined so that `ClientDeviceCredential` can be used as a
+             * key in maps. */
             bool operator<(const ClientDeviceCredential &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -625,7 +715,7 @@ namespace Aws
             REPORTED_LIFECYCLE_STATE_ERRORED
         };
 
-        class ValidateConfigurationUpdateEvents : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ValidateConfigurationUpdateEvents : public AbstractShapeBase
         {
           public:
             ValidateConfigurationUpdateEvents() noexcept {}
@@ -657,7 +747,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ValidateConfigurationUpdateEvents *) noexcept;
-            /* This needs to be defined so that `ValidateConfigurationUpdateEvents` can be used as a key in maps. */
+            /* This needs to be defined so that `ValidateConfigurationUpdateEvents` can be
+             * used as a key in maps. */
             bool operator<(const ValidateConfigurationUpdateEvents &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -672,7 +763,7 @@ namespace Aws
             Aws::Crt::Optional<ValidateConfigurationUpdateEvent> m_validateConfigurationUpdateEvent;
         };
 
-        class SubscriptionResponseMessage : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscriptionResponseMessage : public AbstractShapeBase
         {
           public:
             SubscriptionResponseMessage() noexcept {}
@@ -716,7 +807,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscriptionResponseMessage *) noexcept;
-            /* This needs to be defined so that `SubscriptionResponseMessage` can be used as a key in maps. */
+            /* This needs to be defined so that `SubscriptionResponseMessage` can be used
+             * as a key in maps. */
             bool operator<(const SubscriptionResponseMessage &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -739,7 +831,7 @@ namespace Aws
             RECEIVE_MODE_RECEIVE_MESSAGES_FROM_OTHERS
         };
 
-        class IoTCoreMessage : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API IoTCoreMessage : public AbstractShapeBase
         {
           public:
             IoTCoreMessage() noexcept {}
@@ -767,7 +859,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(IoTCoreMessage *) noexcept;
-            /* This needs to be defined so that `IoTCoreMessage` can be used as a key in maps. */
+            /* This needs to be defined so that `IoTCoreMessage` can be used as a key in
+             * maps. */
             bool operator<(const IoTCoreMessage &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -788,7 +881,7 @@ namespace Aws
             QOS_AT_LEAST_ONCE
         };
 
-        class ConfigurationUpdateEvents : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ConfigurationUpdateEvents : public AbstractShapeBase
         {
           public:
             ConfigurationUpdateEvents() noexcept {}
@@ -816,7 +909,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ConfigurationUpdateEvents *) noexcept;
-            /* This needs to be defined so that `ConfigurationUpdateEvents` can be used as a key in maps. */
+            /* This needs to be defined so that `ConfigurationUpdateEvents` can be used as
+             * a key in maps. */
             bool operator<(const ConfigurationUpdateEvents &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -831,7 +925,7 @@ namespace Aws
             Aws::Crt::Optional<ConfigurationUpdateEvent> m_configurationUpdateEvent;
         };
 
-        class ComponentUpdatePolicyEvents : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ComponentUpdatePolicyEvents : public AbstractShapeBase
         {
           public:
             ComponentUpdatePolicyEvents() noexcept {}
@@ -875,7 +969,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ComponentUpdatePolicyEvents *) noexcept;
-            /* This needs to be defined so that `ComponentUpdatePolicyEvents` can be used as a key in maps. */
+            /* This needs to be defined so that `ComponentUpdatePolicyEvents` can be used
+             * as a key in maps. */
             bool operator<(const ComponentUpdatePolicyEvents &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -892,7 +987,7 @@ namespace Aws
             Aws::Crt::Optional<PostComponentUpdateEvent> m_postUpdateEvent;
         };
 
-        class CertificateUpdateEvent : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API CertificateUpdateEvent : public AbstractShapeBase
         {
           public:
             CertificateUpdateEvent() noexcept {}
@@ -920,7 +1015,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(CertificateUpdateEvent *) noexcept;
-            /* This needs to be defined so that `CertificateUpdateEvent` can be used as a key in maps. */
+            /* This needs to be defined so that `CertificateUpdateEvent` can be used as a
+             * key in maps. */
             bool operator<(const CertificateUpdateEvent &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -935,7 +1031,7 @@ namespace Aws
             Aws::Crt::Optional<CertificateUpdate> m_certificateUpdate;
         };
 
-        class CertificateOptions : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API CertificateOptions : public AbstractShapeBase
         {
           public:
             CertificateOptions() noexcept {}
@@ -948,7 +1044,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(CertificateOptions *) noexcept;
-            /* This needs to be defined so that `CertificateOptions` can be used as a key in maps. */
+            /* This needs to be defined so that `CertificateOptions` can be used as a key
+             * in maps. */
             bool operator<(const CertificateOptions &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -965,7 +1062,7 @@ namespace Aws
             REQUEST_STATUS_FAILED
         };
 
-        class ConfigurationValidityReport : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ConfigurationValidityReport : public AbstractShapeBase
         {
           public:
             ConfigurationValidityReport() noexcept {}
@@ -982,7 +1079,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ConfigurationValidityReport *) noexcept;
-            /* This needs to be defined so that `ConfigurationValidityReport` can be used as a key in maps. */
+            /* This needs to be defined so that `ConfigurationValidityReport` can be used
+             * as a key in maps. */
             bool operator<(const ConfigurationValidityReport &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -995,7 +1093,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class PublishMessage : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API PublishMessage : public AbstractShapeBase
         {
           public:
             PublishMessage() noexcept {}
@@ -1039,7 +1137,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(PublishMessage *) noexcept;
-            /* This needs to be defined so that `PublishMessage` can be used as a key in maps. */
+            /* This needs to be defined so that `PublishMessage` can be used as a key in
+             * maps. */
             bool operator<(const PublishMessage &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1056,7 +1155,7 @@ namespace Aws
             Aws::Crt::Optional<BinaryMessage> m_binaryMessage;
         };
 
-        class SecretValue : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SecretValue : public AbstractShapeBase
         {
           public:
             SecretValue() noexcept {}
@@ -1100,7 +1199,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SecretValue *) noexcept;
-            /* This needs to be defined so that `SecretValue` can be used as a key in maps. */
+            /* This needs to be defined so that `SecretValue` can be used as a key in
+             * maps. */
             bool operator<(const SecretValue &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1117,7 +1217,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::Vector<uint8_t>> m_secretBinary;
         };
 
-        class CredentialDocument : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API CredentialDocument : public AbstractShapeBase
         {
           public:
             CredentialDocument() noexcept {}
@@ -1145,7 +1245,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(CredentialDocument *) noexcept;
-            /* This needs to be defined so that `CredentialDocument` can be used as a key in maps. */
+            /* This needs to be defined so that `CredentialDocument` can be used as a key
+             * in maps. */
             bool operator<(const CredentialDocument &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1160,7 +1261,13 @@ namespace Aws
             Aws::Crt::Optional<MQTTCredential> m_mqttCredential;
         };
 
-        class InvalidArgumentsError : public OperationError
+        enum FailureHandlingPolicy
+        {
+            FAILURE_HANDLING_POLICY_ROLLBACK,
+            FAILURE_HANDLING_POLICY_DO_NOTHING
+        };
+
+        class AWS_GREENGRASSCOREIPC_API InvalidArgumentsError : public OperationError
         {
           public:
             InvalidArgumentsError() noexcept {}
@@ -1173,7 +1280,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(InvalidArgumentsError *) noexcept;
-            /* This needs to be defined so that `InvalidArgumentsError` can be used as a key in maps. */
+            /* This needs to be defined so that `InvalidArgumentsError` can be used as a
+             * key in maps. */
             bool operator<(const InvalidArgumentsError &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1184,7 +1292,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class ServiceError : public OperationError
+        class AWS_GREENGRASSCOREIPC_API ServiceError : public OperationError
         {
           public:
             ServiceError() noexcept {}
@@ -1199,7 +1307,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ServiceError *) noexcept;
-            /* This needs to be defined so that `ServiceError` can be used as a key in maps. */
+            /* This needs to be defined so that `ServiceError` can be used as a key in
+             * maps. */
             bool operator<(const ServiceError &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1211,7 +1320,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::JsonObject> m_context;
         };
 
-        class UnauthorizedError : public OperationError
+        class AWS_GREENGRASSCOREIPC_API UnauthorizedError : public OperationError
         {
           public:
             UnauthorizedError() noexcept {}
@@ -1224,7 +1333,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(UnauthorizedError *) noexcept;
-            /* This needs to be defined so that `UnauthorizedError` can be used as a key in maps. */
+            /* This needs to be defined so that `UnauthorizedError` can be used as a key
+             * in maps. */
             bool operator<(const UnauthorizedError &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1235,7 +1345,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class VerifyClientDeviceIdentityResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API VerifyClientDeviceIdentityResponse : public AbstractShapeBase
         {
           public:
             VerifyClientDeviceIdentityResponse() noexcept {}
@@ -1251,7 +1361,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(VerifyClientDeviceIdentityResponse *) noexcept;
-            /* This needs to be defined so that `VerifyClientDeviceIdentityResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `VerifyClientDeviceIdentityResponse` can
+             * be used as a key in maps. */
             bool operator<(const VerifyClientDeviceIdentityResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1262,7 +1373,7 @@ namespace Aws
             Aws::Crt::Optional<bool> m_isValidClientDevice;
         };
 
-        class VerifyClientDeviceIdentityRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API VerifyClientDeviceIdentityRequest : public AbstractShapeBase
         {
           public:
             VerifyClientDeviceIdentityRequest() noexcept {}
@@ -1275,7 +1386,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(VerifyClientDeviceIdentityRequest *) noexcept;
-            /* This needs to be defined so that `VerifyClientDeviceIdentityRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `VerifyClientDeviceIdentityRequest` can be
+             * used as a key in maps. */
             bool operator<(const VerifyClientDeviceIdentityRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1286,7 +1398,7 @@ namespace Aws
             Aws::Crt::Optional<ClientDeviceCredential> m_credential;
         };
 
-        class InvalidTokenError : public OperationError
+        class AWS_GREENGRASSCOREIPC_API InvalidTokenError : public OperationError
         {
           public:
             InvalidTokenError() noexcept {}
@@ -1299,7 +1411,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(InvalidTokenError *) noexcept;
-            /* This needs to be defined so that `InvalidTokenError` can be used as a key in maps. */
+            /* This needs to be defined so that `InvalidTokenError` can be used as a key
+             * in maps. */
             bool operator<(const InvalidTokenError &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1310,7 +1423,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class ValidateAuthorizationTokenResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ValidateAuthorizationTokenResponse : public AbstractShapeBase
         {
           public:
             ValidateAuthorizationTokenResponse() noexcept {}
@@ -1323,7 +1436,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ValidateAuthorizationTokenResponse *) noexcept;
-            /* This needs to be defined so that `ValidateAuthorizationTokenResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `ValidateAuthorizationTokenResponse` can
+             * be used as a key in maps. */
             bool operator<(const ValidateAuthorizationTokenResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1334,7 +1448,7 @@ namespace Aws
             Aws::Crt::Optional<bool> m_isValid;
         };
 
-        class ValidateAuthorizationTokenRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ValidateAuthorizationTokenRequest : public AbstractShapeBase
         {
           public:
             ValidateAuthorizationTokenRequest() noexcept {}
@@ -1347,7 +1461,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ValidateAuthorizationTokenRequest *) noexcept;
-            /* This needs to be defined so that `ValidateAuthorizationTokenRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `ValidateAuthorizationTokenRequest` can be
+             * used as a key in maps. */
             bool operator<(const ValidateAuthorizationTokenRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1358,7 +1473,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_token;
         };
 
-        class ConflictError : public OperationError
+        class AWS_GREENGRASSCOREIPC_API ConflictError : public OperationError
         {
           public:
             ConflictError() noexcept {}
@@ -1371,7 +1486,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ConflictError *) noexcept;
-            /* This needs to be defined so that `ConflictError` can be used as a key in maps. */
+            /* This needs to be defined so that `ConflictError` can be used as a key in
+             * maps. */
             bool operator<(const ConflictError &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1382,7 +1498,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class UpdateThingShadowResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API UpdateThingShadowResponse : public AbstractShapeBase
         {
           public:
             UpdateThingShadowResponse() noexcept {}
@@ -1395,7 +1511,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(UpdateThingShadowResponse *) noexcept;
-            /* This needs to be defined so that `UpdateThingShadowResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `UpdateThingShadowResponse` can be used as
+             * a key in maps. */
             bool operator<(const UpdateThingShadowResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1406,7 +1523,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::Vector<uint8_t>> m_payload;
         };
 
-        class UpdateThingShadowRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API UpdateThingShadowRequest : public AbstractShapeBase
         {
           public:
             UpdateThingShadowRequest() noexcept {}
@@ -1423,7 +1540,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(UpdateThingShadowRequest *) noexcept;
-            /* This needs to be defined so that `UpdateThingShadowRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `UpdateThingShadowRequest` can be used as
+             * a key in maps. */
             bool operator<(const UpdateThingShadowRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1436,7 +1554,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::Vector<uint8_t>> m_payload;
         };
 
-        class ResourceNotFoundError : public OperationError
+        class AWS_GREENGRASSCOREIPC_API ResourceNotFoundError : public OperationError
         {
           public:
             ResourceNotFoundError() noexcept {}
@@ -1453,7 +1571,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ResourceNotFoundError *) noexcept;
-            /* This needs to be defined so that `ResourceNotFoundError` can be used as a key in maps. */
+            /* This needs to be defined so that `ResourceNotFoundError` can be used as a
+             * key in maps. */
             bool operator<(const ResourceNotFoundError &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1466,7 +1585,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_resourceName;
         };
 
-        class UpdateStateResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API UpdateStateResponse : public AbstractShapeBase
         {
           public:
             UpdateStateResponse() noexcept {}
@@ -1477,7 +1596,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(UpdateStateResponse *) noexcept;
-            /* This needs to be defined so that `UpdateStateResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `UpdateStateResponse` can be used as a key
+             * in maps. */
             bool operator<(const UpdateStateResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1487,7 +1607,7 @@ namespace Aws
           private:
         };
 
-        class UpdateStateRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API UpdateStateRequest : public AbstractShapeBase
         {
           public:
             UpdateStateRequest() noexcept {}
@@ -1500,7 +1620,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(UpdateStateRequest *) noexcept;
-            /* This needs to be defined so that `UpdateStateRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `UpdateStateRequest` can be used as a key
+             * in maps. */
             bool operator<(const UpdateStateRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1511,7 +1632,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_state;
         };
 
-        class FailedUpdateConditionCheckError : public OperationError
+        class AWS_GREENGRASSCOREIPC_API FailedUpdateConditionCheckError : public OperationError
         {
           public:
             FailedUpdateConditionCheckError() noexcept {}
@@ -1524,7 +1645,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(FailedUpdateConditionCheckError *) noexcept;
-            /* This needs to be defined so that `FailedUpdateConditionCheckError` can be used as a key in maps. */
+            /* This needs to be defined so that `FailedUpdateConditionCheckError` can be
+             * used as a key in maps. */
             bool operator<(const FailedUpdateConditionCheckError &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1535,7 +1657,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class UpdateConfigurationResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API UpdateConfigurationResponse : public AbstractShapeBase
         {
           public:
             UpdateConfigurationResponse() noexcept {}
@@ -1546,7 +1668,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(UpdateConfigurationResponse *) noexcept;
-            /* This needs to be defined so that `UpdateConfigurationResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `UpdateConfigurationResponse` can be used
+             * as a key in maps. */
             bool operator<(const UpdateConfigurationResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1556,7 +1679,7 @@ namespace Aws
           private:
         };
 
-        class UpdateConfigurationRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API UpdateConfigurationRequest : public AbstractShapeBase
         {
           public:
             UpdateConfigurationRequest() noexcept {}
@@ -1573,7 +1696,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(UpdateConfigurationRequest *) noexcept;
-            /* This needs to be defined so that `UpdateConfigurationRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `UpdateConfigurationRequest` can be used
+             * as a key in maps. */
             bool operator<(const UpdateConfigurationRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1586,7 +1710,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::JsonObject> m_valueToMerge;
         };
 
-        class SubscribeToValidateConfigurationUpdatesResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscribeToValidateConfigurationUpdatesResponse : public AbstractShapeBase
         {
           public:
             SubscribeToValidateConfigurationUpdatesResponse() noexcept {}
@@ -1600,8 +1724,9 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscribeToValidateConfigurationUpdatesResponse *) noexcept;
-            /* This needs to be defined so that `SubscribeToValidateConfigurationUpdatesResponse` can be used as a key
-             * in maps. */
+            /* This needs to be defined so that
+             * `SubscribeToValidateConfigurationUpdatesResponse` can be used as a key in
+             * maps. */
             bool operator<(const SubscribeToValidateConfigurationUpdatesResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1611,7 +1736,7 @@ namespace Aws
           private:
         };
 
-        class SubscribeToValidateConfigurationUpdatesRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscribeToValidateConfigurationUpdatesRequest : public AbstractShapeBase
         {
           public:
             SubscribeToValidateConfigurationUpdatesRequest() noexcept {}
@@ -1625,7 +1750,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscribeToValidateConfigurationUpdatesRequest *) noexcept;
-            /* This needs to be defined so that `SubscribeToValidateConfigurationUpdatesRequest` can be used as a key in
+            /* This needs to be defined so that
+             * `SubscribeToValidateConfigurationUpdatesRequest` can be used as a key in
              * maps. */
             bool operator<(const SubscribeToValidateConfigurationUpdatesRequest &) const noexcept;
             static const char *MODEL_NAME;
@@ -1636,7 +1762,7 @@ namespace Aws
           private:
         };
 
-        class SubscribeToTopicResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscribeToTopicResponse : public AbstractShapeBase
         {
           public:
             SubscribeToTopicResponse() noexcept {}
@@ -1651,7 +1777,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscribeToTopicResponse *) noexcept;
-            /* This needs to be defined so that `SubscribeToTopicResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `SubscribeToTopicResponse` can be used as
+             * a key in maps. */
             bool operator<(const SubscribeToTopicResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1662,7 +1789,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_topicName;
         };
 
-        class SubscribeToTopicRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscribeToTopicRequest : public AbstractShapeBase
         {
           public:
             SubscribeToTopicRequest() noexcept {}
@@ -1677,7 +1804,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscribeToTopicRequest *) noexcept;
-            /* This needs to be defined so that `SubscribeToTopicRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `SubscribeToTopicRequest` can be used as a
+             * key in maps. */
             bool operator<(const SubscribeToTopicRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1689,7 +1817,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_receiveMode;
         };
 
-        class SubscribeToIoTCoreResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscribeToIoTCoreResponse : public AbstractShapeBase
         {
           public:
             SubscribeToIoTCoreResponse() noexcept {}
@@ -1700,7 +1828,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscribeToIoTCoreResponse *) noexcept;
-            /* This needs to be defined so that `SubscribeToIoTCoreResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `SubscribeToIoTCoreResponse` can be used
+             * as a key in maps. */
             bool operator<(const SubscribeToIoTCoreResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1710,7 +1839,7 @@ namespace Aws
           private:
         };
 
-        class SubscribeToIoTCoreRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscribeToIoTCoreRequest : public AbstractShapeBase
         {
           public:
             SubscribeToIoTCoreRequest() noexcept {}
@@ -1725,7 +1854,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscribeToIoTCoreRequest *) noexcept;
-            /* This needs to be defined so that `SubscribeToIoTCoreRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `SubscribeToIoTCoreRequest` can be used as
+             * a key in maps. */
             bool operator<(const SubscribeToIoTCoreRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1737,7 +1867,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_qos;
         };
 
-        class SubscribeToConfigurationUpdateResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscribeToConfigurationUpdateResponse : public AbstractShapeBase
         {
           public:
             SubscribeToConfigurationUpdateResponse() noexcept {}
@@ -1750,8 +1880,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscribeToConfigurationUpdateResponse *) noexcept;
-            /* This needs to be defined so that `SubscribeToConfigurationUpdateResponse` can be used as a key in maps.
-             */
+            /* This needs to be defined so that `SubscribeToConfigurationUpdateResponse`
+             * can be used as a key in maps. */
             bool operator<(const SubscribeToConfigurationUpdateResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1761,7 +1891,7 @@ namespace Aws
           private:
         };
 
-        class SubscribeToConfigurationUpdateRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscribeToConfigurationUpdateRequest : public AbstractShapeBase
         {
           public:
             SubscribeToConfigurationUpdateRequest() noexcept {}
@@ -1778,7 +1908,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscribeToConfigurationUpdateRequest *) noexcept;
-            /* This needs to be defined so that `SubscribeToConfigurationUpdateRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `SubscribeToConfigurationUpdateRequest`
+             * can be used as a key in maps. */
             bool operator<(const SubscribeToConfigurationUpdateRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1790,7 +1921,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::Vector<Aws::Crt::String>> m_keyPath;
         };
 
-        class SubscribeToComponentUpdatesResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscribeToComponentUpdatesResponse : public AbstractShapeBase
         {
           public:
             SubscribeToComponentUpdatesResponse() noexcept {}
@@ -1801,7 +1932,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscribeToComponentUpdatesResponse *) noexcept;
-            /* This needs to be defined so that `SubscribeToComponentUpdatesResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `SubscribeToComponentUpdatesResponse` can
+             * be used as a key in maps. */
             bool operator<(const SubscribeToComponentUpdatesResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1811,7 +1943,7 @@ namespace Aws
           private:
         };
 
-        class SubscribeToComponentUpdatesRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscribeToComponentUpdatesRequest : public AbstractShapeBase
         {
           public:
             SubscribeToComponentUpdatesRequest() noexcept {}
@@ -1822,7 +1954,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscribeToComponentUpdatesRequest *) noexcept;
-            /* This needs to be defined so that `SubscribeToComponentUpdatesRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `SubscribeToComponentUpdatesRequest` can
+             * be used as a key in maps. */
             bool operator<(const SubscribeToComponentUpdatesRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1832,7 +1965,7 @@ namespace Aws
           private:
         };
 
-        class SubscribeToCertificateUpdatesResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscribeToCertificateUpdatesResponse : public AbstractShapeBase
         {
           public:
             SubscribeToCertificateUpdatesResponse() noexcept {}
@@ -1845,7 +1978,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscribeToCertificateUpdatesResponse *) noexcept;
-            /* This needs to be defined so that `SubscribeToCertificateUpdatesResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `SubscribeToCertificateUpdatesResponse`
+             * can be used as a key in maps. */
             bool operator<(const SubscribeToCertificateUpdatesResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1855,7 +1989,7 @@ namespace Aws
           private:
         };
 
-        class SubscribeToCertificateUpdatesRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SubscribeToCertificateUpdatesRequest : public AbstractShapeBase
         {
           public:
             SubscribeToCertificateUpdatesRequest() noexcept {}
@@ -1871,7 +2005,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SubscribeToCertificateUpdatesRequest *) noexcept;
-            /* This needs to be defined so that `SubscribeToCertificateUpdatesRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `SubscribeToCertificateUpdatesRequest` can
+             * be used as a key in maps. */
             bool operator<(const SubscribeToCertificateUpdatesRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1882,7 +2017,7 @@ namespace Aws
             Aws::Crt::Optional<CertificateOptions> m_certificateOptions;
         };
 
-        class ComponentNotFoundError : public OperationError
+        class AWS_GREENGRASSCOREIPC_API ComponentNotFoundError : public OperationError
         {
           public:
             ComponentNotFoundError() noexcept {}
@@ -1895,7 +2030,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ComponentNotFoundError *) noexcept;
-            /* This needs to be defined so that `ComponentNotFoundError` can be used as a key in maps. */
+            /* This needs to be defined so that `ComponentNotFoundError` can be used as a
+             * key in maps. */
             bool operator<(const ComponentNotFoundError &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1906,7 +2042,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class StopComponentResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API StopComponentResponse : public AbstractShapeBase
         {
           public:
             StopComponentResponse() noexcept {}
@@ -1921,7 +2057,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(StopComponentResponse *) noexcept;
-            /* This needs to be defined so that `StopComponentResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `StopComponentResponse` can be used as a
+             * key in maps. */
             bool operator<(const StopComponentResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1933,7 +2070,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class StopComponentRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API StopComponentRequest : public AbstractShapeBase
         {
           public:
             StopComponentRequest() noexcept {}
@@ -1946,7 +2083,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(StopComponentRequest *) noexcept;
-            /* This needs to be defined so that `StopComponentRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `StopComponentRequest` can be used as a
+             * key in maps. */
             bool operator<(const StopComponentRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1957,7 +2095,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_componentName;
         };
 
-        class SendConfigurationValidityReportResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SendConfigurationValidityReportResponse : public AbstractShapeBase
         {
           public:
             SendConfigurationValidityReportResponse() noexcept {}
@@ -1970,8 +2108,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SendConfigurationValidityReportResponse *) noexcept;
-            /* This needs to be defined so that `SendConfigurationValidityReportResponse` can be used as a key in maps.
-             */
+            /* This needs to be defined so that `SendConfigurationValidityReportResponse`
+             * can be used as a key in maps. */
             bool operator<(const SendConfigurationValidityReportResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -1981,7 +2119,7 @@ namespace Aws
           private:
         };
 
-        class SendConfigurationValidityReportRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API SendConfigurationValidityReportRequest : public AbstractShapeBase
         {
           public:
             SendConfigurationValidityReportRequest() noexcept {}
@@ -2002,8 +2140,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(SendConfigurationValidityReportRequest *) noexcept;
-            /* This needs to be defined so that `SendConfigurationValidityReportRequest` can be used as a key in maps.
-             */
+            /* This needs to be defined so that `SendConfigurationValidityReportRequest`
+             * can be used as a key in maps. */
             bool operator<(const SendConfigurationValidityReportRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2014,7 +2152,7 @@ namespace Aws
             Aws::Crt::Optional<ConfigurationValidityReport> m_configurationValidityReport;
         };
 
-        class ResumeComponentResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ResumeComponentResponse : public AbstractShapeBase
         {
           public:
             ResumeComponentResponse() noexcept {}
@@ -2025,7 +2163,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ResumeComponentResponse *) noexcept;
-            /* This needs to be defined so that `ResumeComponentResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `ResumeComponentResponse` can be used as a
+             * key in maps. */
             bool operator<(const ResumeComponentResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2035,7 +2174,7 @@ namespace Aws
           private:
         };
 
-        class ResumeComponentRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ResumeComponentRequest : public AbstractShapeBase
         {
           public:
             ResumeComponentRequest() noexcept {}
@@ -2048,7 +2187,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ResumeComponentRequest *) noexcept;
-            /* This needs to be defined so that `ResumeComponentRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `ResumeComponentRequest` can be used as a
+             * key in maps. */
             bool operator<(const ResumeComponentRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2059,7 +2199,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_componentName;
         };
 
-        class RestartComponentResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API RestartComponentResponse : public AbstractShapeBase
         {
           public:
             RestartComponentResponse() noexcept {}
@@ -2074,7 +2214,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(RestartComponentResponse *) noexcept;
-            /* This needs to be defined so that `RestartComponentResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `RestartComponentResponse` can be used as
+             * a key in maps. */
             bool operator<(const RestartComponentResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2086,7 +2227,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class RestartComponentRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API RestartComponentRequest : public AbstractShapeBase
         {
           public:
             RestartComponentRequest() noexcept {}
@@ -2099,7 +2240,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(RestartComponentRequest *) noexcept;
-            /* This needs to be defined so that `RestartComponentRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `RestartComponentRequest` can be used as a
+             * key in maps. */
             bool operator<(const RestartComponentRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2110,7 +2252,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_componentName;
         };
 
-        class PutComponentMetricResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API PutComponentMetricResponse : public AbstractShapeBase
         {
           public:
             PutComponentMetricResponse() noexcept {}
@@ -2121,7 +2263,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(PutComponentMetricResponse *) noexcept;
-            /* This needs to be defined so that `PutComponentMetricResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `PutComponentMetricResponse` can be used
+             * as a key in maps. */
             bool operator<(const PutComponentMetricResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2131,7 +2274,7 @@ namespace Aws
           private:
         };
 
-        class PutComponentMetricRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API PutComponentMetricRequest : public AbstractShapeBase
         {
           public:
             PutComponentMetricRequest() noexcept {}
@@ -2144,7 +2287,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(PutComponentMetricRequest *) noexcept;
-            /* This needs to be defined so that `PutComponentMetricRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `PutComponentMetricRequest` can be used as
+             * a key in maps. */
             bool operator<(const PutComponentMetricRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2155,7 +2299,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::Vector<Metric>> m_metrics;
         };
 
-        class PublishToTopicResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API PublishToTopicResponse : public AbstractShapeBase
         {
           public:
             PublishToTopicResponse() noexcept {}
@@ -2166,7 +2310,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(PublishToTopicResponse *) noexcept;
-            /* This needs to be defined so that `PublishToTopicResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `PublishToTopicResponse` can be used as a
+             * key in maps. */
             bool operator<(const PublishToTopicResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2176,7 +2321,7 @@ namespace Aws
           private:
         };
 
-        class PublishToTopicRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API PublishToTopicRequest : public AbstractShapeBase
         {
           public:
             PublishToTopicRequest() noexcept {}
@@ -2191,7 +2336,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(PublishToTopicRequest *) noexcept;
-            /* This needs to be defined so that `PublishToTopicRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `PublishToTopicRequest` can be used as a
+             * key in maps. */
             bool operator<(const PublishToTopicRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2203,7 +2349,7 @@ namespace Aws
             Aws::Crt::Optional<PublishMessage> m_publishMessage;
         };
 
-        class PublishToIoTCoreResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API PublishToIoTCoreResponse : public AbstractShapeBase
         {
           public:
             PublishToIoTCoreResponse() noexcept {}
@@ -2214,7 +2360,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(PublishToIoTCoreResponse *) noexcept;
-            /* This needs to be defined so that `PublishToIoTCoreResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `PublishToIoTCoreResponse` can be used as
+             * a key in maps. */
             bool operator<(const PublishToIoTCoreResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2224,7 +2371,7 @@ namespace Aws
           private:
         };
 
-        class PublishToIoTCoreRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API PublishToIoTCoreRequest : public AbstractShapeBase
         {
           public:
             PublishToIoTCoreRequest() noexcept {}
@@ -2267,7 +2414,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(PublishToIoTCoreRequest *) noexcept;
-            /* This needs to be defined so that `PublishToIoTCoreRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `PublishToIoTCoreRequest` can be used as a
+             * key in maps. */
             bool operator<(const PublishToIoTCoreRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2287,7 +2435,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_contentType;
         };
 
-        class PauseComponentResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API PauseComponentResponse : public AbstractShapeBase
         {
           public:
             PauseComponentResponse() noexcept {}
@@ -2298,7 +2446,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(PauseComponentResponse *) noexcept;
-            /* This needs to be defined so that `PauseComponentResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `PauseComponentResponse` can be used as a
+             * key in maps. */
             bool operator<(const PauseComponentResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2308,7 +2457,7 @@ namespace Aws
           private:
         };
 
-        class PauseComponentRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API PauseComponentRequest : public AbstractShapeBase
         {
           public:
             PauseComponentRequest() noexcept {}
@@ -2321,7 +2470,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(PauseComponentRequest *) noexcept;
-            /* This needs to be defined so that `PauseComponentRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `PauseComponentRequest` can be used as a
+             * key in maps. */
             bool operator<(const PauseComponentRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2332,7 +2482,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_componentName;
         };
 
-        class ListNamedShadowsForThingResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ListNamedShadowsForThingResponse : public AbstractShapeBase
         {
           public:
             ListNamedShadowsForThingResponse() noexcept {}
@@ -2349,7 +2499,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ListNamedShadowsForThingResponse *) noexcept;
-            /* This needs to be defined so that `ListNamedShadowsForThingResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `ListNamedShadowsForThingResponse` can be
+             * used as a key in maps. */
             bool operator<(const ListNamedShadowsForThingResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2362,7 +2513,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_nextToken;
         };
 
-        class ListNamedShadowsForThingRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ListNamedShadowsForThingRequest : public AbstractShapeBase
         {
           public:
             ListNamedShadowsForThingRequest() noexcept {}
@@ -2379,7 +2530,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ListNamedShadowsForThingRequest *) noexcept;
-            /* This needs to be defined so that `ListNamedShadowsForThingRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `ListNamedShadowsForThingRequest` can be
+             * used as a key in maps. */
             bool operator<(const ListNamedShadowsForThingRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2392,7 +2544,7 @@ namespace Aws
             Aws::Crt::Optional<int> m_pageSize;
         };
 
-        class ListLocalDeploymentsResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ListLocalDeploymentsResponse : public AbstractShapeBase
         {
           public:
             ListLocalDeploymentsResponse() noexcept {}
@@ -2411,7 +2563,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ListLocalDeploymentsResponse *) noexcept;
-            /* This needs to be defined so that `ListLocalDeploymentsResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `ListLocalDeploymentsResponse` can be used
+             * as a key in maps. */
             bool operator<(const ListLocalDeploymentsResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2422,7 +2575,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::Vector<LocalDeployment>> m_localDeployments;
         };
 
-        class ListLocalDeploymentsRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ListLocalDeploymentsRequest : public AbstractShapeBase
         {
           public:
             ListLocalDeploymentsRequest() noexcept {}
@@ -2433,7 +2586,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ListLocalDeploymentsRequest *) noexcept;
-            /* This needs to be defined so that `ListLocalDeploymentsRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `ListLocalDeploymentsRequest` can be used
+             * as a key in maps. */
             bool operator<(const ListLocalDeploymentsRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2443,7 +2597,7 @@ namespace Aws
           private:
         };
 
-        class ListComponentsResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ListComponentsResponse : public AbstractShapeBase
         {
           public:
             ListComponentsResponse() noexcept {}
@@ -2459,7 +2613,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ListComponentsResponse *) noexcept;
-            /* This needs to be defined so that `ListComponentsResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `ListComponentsResponse` can be used as a
+             * key in maps. */
             bool operator<(const ListComponentsResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2470,7 +2625,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::Vector<ComponentDetails>> m_components;
         };
 
-        class ListComponentsRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API ListComponentsRequest : public AbstractShapeBase
         {
           public:
             ListComponentsRequest() noexcept {}
@@ -2481,7 +2636,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(ListComponentsRequest *) noexcept;
-            /* This needs to be defined so that `ListComponentsRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `ListComponentsRequest` can be used as a
+             * key in maps. */
             bool operator<(const ListComponentsRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2491,7 +2647,7 @@ namespace Aws
           private:
         };
 
-        class GetThingShadowResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API GetThingShadowResponse : public AbstractShapeBase
         {
           public:
             GetThingShadowResponse() noexcept {}
@@ -2504,7 +2660,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(GetThingShadowResponse *) noexcept;
-            /* This needs to be defined so that `GetThingShadowResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `GetThingShadowResponse` can be used as a
+             * key in maps. */
             bool operator<(const GetThingShadowResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2515,7 +2672,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::Vector<uint8_t>> m_payload;
         };
 
-        class GetThingShadowRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API GetThingShadowRequest : public AbstractShapeBase
         {
           public:
             GetThingShadowRequest() noexcept {}
@@ -2530,7 +2687,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(GetThingShadowRequest *) noexcept;
-            /* This needs to be defined so that `GetThingShadowRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `GetThingShadowRequest` can be used as a
+             * key in maps. */
             bool operator<(const GetThingShadowRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2542,7 +2700,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_shadowName;
         };
 
-        class GetSecretValueResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API GetSecretValueResponse : public AbstractShapeBase
         {
           public:
             GetSecretValueResponse() noexcept {}
@@ -2564,7 +2722,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(GetSecretValueResponse *) noexcept;
-            /* This needs to be defined so that `GetSecretValueResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `GetSecretValueResponse` can be used as a
+             * key in maps. */
             bool operator<(const GetSecretValueResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2578,7 +2737,7 @@ namespace Aws
             Aws::Crt::Optional<SecretValue> m_secretValue;
         };
 
-        class GetSecretValueRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API GetSecretValueRequest : public AbstractShapeBase
         {
           public:
             GetSecretValueRequest() noexcept {}
@@ -2595,7 +2754,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(GetSecretValueRequest *) noexcept;
-            /* This needs to be defined so that `GetSecretValueRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `GetSecretValueRequest` can be used as a
+             * key in maps. */
             bool operator<(const GetSecretValueRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2608,7 +2768,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_versionStage;
         };
 
-        class GetLocalDeploymentStatusResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API GetLocalDeploymentStatusResponse : public AbstractShapeBase
         {
           public:
             GetLocalDeploymentStatusResponse() noexcept {}
@@ -2621,7 +2781,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(GetLocalDeploymentStatusResponse *) noexcept;
-            /* This needs to be defined so that `GetLocalDeploymentStatusResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `GetLocalDeploymentStatusResponse` can be
+             * used as a key in maps. */
             bool operator<(const GetLocalDeploymentStatusResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2632,7 +2793,7 @@ namespace Aws
             Aws::Crt::Optional<LocalDeployment> m_deployment;
         };
 
-        class GetLocalDeploymentStatusRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API GetLocalDeploymentStatusRequest : public AbstractShapeBase
         {
           public:
             GetLocalDeploymentStatusRequest() noexcept {}
@@ -2645,7 +2806,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(GetLocalDeploymentStatusRequest *) noexcept;
-            /* This needs to be defined so that `GetLocalDeploymentStatusRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `GetLocalDeploymentStatusRequest` can be
+             * used as a key in maps. */
             bool operator<(const GetLocalDeploymentStatusRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2656,7 +2818,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_deploymentId;
         };
 
-        class GetConfigurationResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API GetConfigurationResponse : public AbstractShapeBase
         {
           public:
             GetConfigurationResponse() noexcept {}
@@ -2671,7 +2833,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(GetConfigurationResponse *) noexcept;
-            /* This needs to be defined so that `GetConfigurationResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `GetConfigurationResponse` can be used as
+             * a key in maps. */
             bool operator<(const GetConfigurationResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2683,7 +2846,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::JsonObject> m_value;
         };
 
-        class GetConfigurationRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API GetConfigurationRequest : public AbstractShapeBase
         {
           public:
             GetConfigurationRequest() noexcept {}
@@ -2698,7 +2861,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(GetConfigurationRequest *) noexcept;
-            /* This needs to be defined so that `GetConfigurationRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `GetConfigurationRequest` can be used as a
+             * key in maps. */
             bool operator<(const GetConfigurationRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2710,7 +2874,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::Vector<Aws::Crt::String>> m_keyPath;
         };
 
-        class GetComponentDetailsResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API GetComponentDetailsResponse : public AbstractShapeBase
         {
           public:
             GetComponentDetailsResponse() noexcept {}
@@ -2726,7 +2890,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(GetComponentDetailsResponse *) noexcept;
-            /* This needs to be defined so that `GetComponentDetailsResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `GetComponentDetailsResponse` can be used
+             * as a key in maps. */
             bool operator<(const GetComponentDetailsResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2737,7 +2902,7 @@ namespace Aws
             Aws::Crt::Optional<ComponentDetails> m_componentDetails;
         };
 
-        class GetComponentDetailsRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API GetComponentDetailsRequest : public AbstractShapeBase
         {
           public:
             GetComponentDetailsRequest() noexcept {}
@@ -2750,7 +2915,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(GetComponentDetailsRequest *) noexcept;
-            /* This needs to be defined so that `GetComponentDetailsRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `GetComponentDetailsRequest` can be used
+             * as a key in maps. */
             bool operator<(const GetComponentDetailsRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2761,7 +2927,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_componentName;
         };
 
-        class InvalidCredentialError : public OperationError
+        class AWS_GREENGRASSCOREIPC_API InvalidCredentialError : public OperationError
         {
           public:
             InvalidCredentialError() noexcept {}
@@ -2774,7 +2940,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(InvalidCredentialError *) noexcept;
-            /* This needs to be defined so that `InvalidCredentialError` can be used as a key in maps. */
+            /* This needs to be defined so that `InvalidCredentialError` can be used as a
+             * key in maps. */
             bool operator<(const InvalidCredentialError &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2785,7 +2952,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class GetClientDeviceAuthTokenResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API GetClientDeviceAuthTokenResponse : public AbstractShapeBase
         {
           public:
             GetClientDeviceAuthTokenResponse() noexcept {}
@@ -2801,7 +2968,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(GetClientDeviceAuthTokenResponse *) noexcept;
-            /* This needs to be defined so that `GetClientDeviceAuthTokenResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `GetClientDeviceAuthTokenResponse` can be
+             * used as a key in maps. */
             bool operator<(const GetClientDeviceAuthTokenResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2812,7 +2980,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_clientDeviceAuthToken;
         };
 
-        class GetClientDeviceAuthTokenRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API GetClientDeviceAuthTokenRequest : public AbstractShapeBase
         {
           public:
             GetClientDeviceAuthTokenRequest() noexcept {}
@@ -2825,7 +2993,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(GetClientDeviceAuthTokenRequest *) noexcept;
-            /* This needs to be defined so that `GetClientDeviceAuthTokenRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `GetClientDeviceAuthTokenRequest` can be
+             * used as a key in maps. */
             bool operator<(const GetClientDeviceAuthTokenRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2836,7 +3005,7 @@ namespace Aws
             Aws::Crt::Optional<CredentialDocument> m_credential;
         };
 
-        class DeleteThingShadowResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API DeleteThingShadowResponse : public AbstractShapeBase
         {
           public:
             DeleteThingShadowResponse() noexcept {}
@@ -2849,7 +3018,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(DeleteThingShadowResponse *) noexcept;
-            /* This needs to be defined so that `DeleteThingShadowResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `DeleteThingShadowResponse` can be used as
+             * a key in maps. */
             bool operator<(const DeleteThingShadowResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2860,7 +3030,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::Vector<uint8_t>> m_payload;
         };
 
-        class DeleteThingShadowRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API DeleteThingShadowRequest : public AbstractShapeBase
         {
           public:
             DeleteThingShadowRequest() noexcept {}
@@ -2875,7 +3045,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(DeleteThingShadowRequest *) noexcept;
-            /* This needs to be defined so that `DeleteThingShadowRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `DeleteThingShadowRequest` can be used as
+             * a key in maps. */
             bool operator<(const DeleteThingShadowRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2887,7 +3058,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_shadowName;
         };
 
-        class DeferComponentUpdateResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API DeferComponentUpdateResponse : public AbstractShapeBase
         {
           public:
             DeferComponentUpdateResponse() noexcept {}
@@ -2898,7 +3069,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(DeferComponentUpdateResponse *) noexcept;
-            /* This needs to be defined so that `DeferComponentUpdateResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `DeferComponentUpdateResponse` can be used
+             * as a key in maps. */
             bool operator<(const DeferComponentUpdateResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2908,7 +3080,7 @@ namespace Aws
           private:
         };
 
-        class DeferComponentUpdateRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API DeferComponentUpdateRequest : public AbstractShapeBase
         {
           public:
             DeferComponentUpdateRequest() noexcept {}
@@ -2925,7 +3097,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(DeferComponentUpdateRequest *) noexcept;
-            /* This needs to be defined so that `DeferComponentUpdateRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `DeferComponentUpdateRequest` can be used
+             * as a key in maps. */
             bool operator<(const DeferComponentUpdateRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2938,7 +3111,7 @@ namespace Aws
             Aws::Crt::Optional<int64_t> m_recheckAfterMs;
         };
 
-        class InvalidArtifactsDirectoryPathError : public OperationError
+        class AWS_GREENGRASSCOREIPC_API InvalidArtifactsDirectoryPathError : public OperationError
         {
           public:
             InvalidArtifactsDirectoryPathError() noexcept {}
@@ -2951,7 +3124,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(InvalidArtifactsDirectoryPathError *) noexcept;
-            /* This needs to be defined so that `InvalidArtifactsDirectoryPathError` can be used as a key in maps. */
+            /* This needs to be defined so that `InvalidArtifactsDirectoryPathError` can
+             * be used as a key in maps. */
             bool operator<(const InvalidArtifactsDirectoryPathError &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2962,7 +3136,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class InvalidRecipeDirectoryPathError : public OperationError
+        class AWS_GREENGRASSCOREIPC_API InvalidRecipeDirectoryPathError : public OperationError
         {
           public:
             InvalidRecipeDirectoryPathError() noexcept {}
@@ -2975,7 +3149,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(InvalidRecipeDirectoryPathError *) noexcept;
-            /* This needs to be defined so that `InvalidRecipeDirectoryPathError` can be used as a key in maps. */
+            /* This needs to be defined so that `InvalidRecipeDirectoryPathError` can be
+             * used as a key in maps. */
             bool operator<(const InvalidRecipeDirectoryPathError &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -2986,7 +3161,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class CreateLocalDeploymentResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API CreateLocalDeploymentResponse : public AbstractShapeBase
         {
           public:
             CreateLocalDeploymentResponse() noexcept {}
@@ -2999,7 +3174,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(CreateLocalDeploymentResponse *) noexcept;
-            /* This needs to be defined so that `CreateLocalDeploymentResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `CreateLocalDeploymentResponse` can be
+             * used as a key in maps. */
             bool operator<(const CreateLocalDeploymentResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -3010,7 +3186,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_deploymentId;
         };
 
-        class CreateLocalDeploymentRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API CreateLocalDeploymentRequest : public AbstractShapeBase
         {
           public:
             CreateLocalDeploymentRequest() noexcept {}
@@ -3067,13 +3243,16 @@ namespace Aws
             {
                 return m_artifactsDirectoryPath;
             }
+            void SetFailureHandlingPolicy(FailureHandlingPolicy failureHandlingPolicy) noexcept;
+            Aws::Crt::Optional<FailureHandlingPolicy> GetFailureHandlingPolicy() noexcept;
             void SerializeToJsonObject(Aws::Crt::JsonObject &payloadObject) const noexcept override;
             static void s_loadFromJsonView(CreateLocalDeploymentRequest &, const Aws::Crt::JsonView &) noexcept;
             static Aws::Crt::ScopedResource<AbstractShapeBase> s_allocateFromPayload(
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(CreateLocalDeploymentRequest *) noexcept;
-            /* This needs to be defined so that `CreateLocalDeploymentRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `CreateLocalDeploymentRequest` can be used
+             * as a key in maps. */
             bool operator<(const CreateLocalDeploymentRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -3088,9 +3267,10 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::Map<Aws::Crt::String, RunWithInfo>> m_componentToRunWithInfo;
             Aws::Crt::Optional<Aws::Crt::String> m_recipeDirectoryPath;
             Aws::Crt::Optional<Aws::Crt::String> m_artifactsDirectoryPath;
+            Aws::Crt::Optional<Aws::Crt::String> m_failureHandlingPolicy;
         };
 
-        class CreateDebugPasswordResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API CreateDebugPasswordResponse : public AbstractShapeBase
         {
           public:
             CreateDebugPasswordResponse() noexcept {}
@@ -3120,7 +3300,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(CreateDebugPasswordResponse *) noexcept;
-            /* This needs to be defined so that `CreateDebugPasswordResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `CreateDebugPasswordResponse` can be used
+             * as a key in maps. */
             bool operator<(const CreateDebugPasswordResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -3135,7 +3316,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_certificateSHA1Hash;
         };
 
-        class CreateDebugPasswordRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API CreateDebugPasswordRequest : public AbstractShapeBase
         {
           public:
             CreateDebugPasswordRequest() noexcept {}
@@ -3146,7 +3327,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(CreateDebugPasswordRequest *) noexcept;
-            /* This needs to be defined so that `CreateDebugPasswordRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `CreateDebugPasswordRequest` can be used
+             * as a key in maps. */
             bool operator<(const CreateDebugPasswordRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -3156,7 +3338,57 @@ namespace Aws
           private:
         };
 
-        class InvalidClientDeviceAuthTokenError : public OperationError
+        class AWS_GREENGRASSCOREIPC_API CancelLocalDeploymentResponse : public AbstractShapeBase
+        {
+          public:
+            CancelLocalDeploymentResponse() noexcept {}
+            CancelLocalDeploymentResponse(const CancelLocalDeploymentResponse &) = default;
+            void SetMessage(const Aws::Crt::String &message) noexcept { m_message = message; }
+            Aws::Crt::Optional<Aws::Crt::String> GetMessage() noexcept { return m_message; }
+            void SerializeToJsonObject(Aws::Crt::JsonObject &payloadObject) const noexcept override;
+            static void s_loadFromJsonView(CancelLocalDeploymentResponse &, const Aws::Crt::JsonView &) noexcept;
+            static Aws::Crt::ScopedResource<AbstractShapeBase> s_allocateFromPayload(
+                Aws::Crt::StringView,
+                Aws::Crt::Allocator *) noexcept;
+            static void s_customDeleter(CancelLocalDeploymentResponse *) noexcept;
+            /* This needs to be defined so that `CancelLocalDeploymentResponse` can be
+             * used as a key in maps. */
+            bool operator<(const CancelLocalDeploymentResponse &) const noexcept;
+            static const char *MODEL_NAME;
+
+          protected:
+            Aws::Crt::String GetModelName() const noexcept override;
+
+          private:
+            Aws::Crt::Optional<Aws::Crt::String> m_message;
+        };
+
+        class AWS_GREENGRASSCOREIPC_API CancelLocalDeploymentRequest : public AbstractShapeBase
+        {
+          public:
+            CancelLocalDeploymentRequest() noexcept {}
+            CancelLocalDeploymentRequest(const CancelLocalDeploymentRequest &) = default;
+            void SetDeploymentId(const Aws::Crt::String &deploymentId) noexcept { m_deploymentId = deploymentId; }
+            Aws::Crt::Optional<Aws::Crt::String> GetDeploymentId() noexcept { return m_deploymentId; }
+            void SerializeToJsonObject(Aws::Crt::JsonObject &payloadObject) const noexcept override;
+            static void s_loadFromJsonView(CancelLocalDeploymentRequest &, const Aws::Crt::JsonView &) noexcept;
+            static Aws::Crt::ScopedResource<AbstractShapeBase> s_allocateFromPayload(
+                Aws::Crt::StringView,
+                Aws::Crt::Allocator *) noexcept;
+            static void s_customDeleter(CancelLocalDeploymentRequest *) noexcept;
+            /* This needs to be defined so that `CancelLocalDeploymentRequest` can be used
+             * as a key in maps. */
+            bool operator<(const CancelLocalDeploymentRequest &) const noexcept;
+            static const char *MODEL_NAME;
+
+          protected:
+            Aws::Crt::String GetModelName() const noexcept override;
+
+          private:
+            Aws::Crt::Optional<Aws::Crt::String> m_deploymentId;
+        };
+
+        class AWS_GREENGRASSCOREIPC_API InvalidClientDeviceAuthTokenError : public OperationError
         {
           public:
             InvalidClientDeviceAuthTokenError() noexcept {}
@@ -3169,7 +3401,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(InvalidClientDeviceAuthTokenError *) noexcept;
-            /* This needs to be defined so that `InvalidClientDeviceAuthTokenError` can be used as a key in maps. */
+            /* This needs to be defined so that `InvalidClientDeviceAuthTokenError` can be
+             * used as a key in maps. */
             bool operator<(const InvalidClientDeviceAuthTokenError &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -3180,7 +3413,7 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_message;
         };
 
-        class AuthorizeClientDeviceActionResponse : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API AuthorizeClientDeviceActionResponse : public AbstractShapeBase
         {
           public:
             AuthorizeClientDeviceActionResponse() noexcept {}
@@ -3193,7 +3426,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(AuthorizeClientDeviceActionResponse *) noexcept;
-            /* This needs to be defined so that `AuthorizeClientDeviceActionResponse` can be used as a key in maps. */
+            /* This needs to be defined so that `AuthorizeClientDeviceActionResponse` can
+             * be used as a key in maps. */
             bool operator<(const AuthorizeClientDeviceActionResponse &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -3204,7 +3438,7 @@ namespace Aws
             Aws::Crt::Optional<bool> m_isAuthorized;
         };
 
-        class AuthorizeClientDeviceActionRequest : public AbstractShapeBase
+        class AWS_GREENGRASSCOREIPC_API AuthorizeClientDeviceActionRequest : public AbstractShapeBase
         {
           public:
             AuthorizeClientDeviceActionRequest() noexcept {}
@@ -3224,7 +3458,8 @@ namespace Aws
                 Aws::Crt::StringView,
                 Aws::Crt::Allocator *) noexcept;
             static void s_customDeleter(AuthorizeClientDeviceActionRequest *) noexcept;
-            /* This needs to be defined so that `AuthorizeClientDeviceActionRequest` can be used as a key in maps. */
+            /* This needs to be defined so that `AuthorizeClientDeviceActionRequest` can
+             * be used as a key in maps. */
             bool operator<(const AuthorizeClientDeviceActionRequest &) const noexcept;
             static const char *MODEL_NAME;
 
@@ -3237,14 +3472,16 @@ namespace Aws
             Aws::Crt::Optional<Aws::Crt::String> m_resource;
         };
 
-        class SubscribeToIoTCoreStreamHandler : public StreamResponseHandler
+        class AWS_GREENGRASSCOREIPC_API SubscribeToIoTCoreStreamHandler : public StreamResponseHandler
         {
           public:
             virtual void OnStreamEvent(IoTCoreMessage *response) { (void)response; }
 
             /**
-             * A callback that is invoked when an error occurs while parsing a message from the stream.
-             * @param rpcError The RPC error containing the status and possibly a CRT error.
+             * A callback that is invoked when an error occurs while parsing a message
+             * from the stream.
+             * @param rpcError The RPC error containing the status and possibly a CRT
+             * error.
              */
             virtual bool OnStreamError(RpcError rpcError)
             {
@@ -3263,7 +3500,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving an error of type `UnauthorizedError`.
+             * A callback that is invoked upon receiving an error of type
+             * `UnauthorizedError`.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(UnauthorizedError *operationError)
@@ -3273,7 +3511,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving ANY error response from the server.
+             * A callback that is invoked upon receiving ANY error response from the
+             * server.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(OperationError *operationError)
@@ -3288,13 +3527,14 @@ namespace Aws
              */
             void OnStreamEvent(Aws::Crt::ScopedResource<AbstractShapeBase> response) override;
             /**
-             * Invoked when a message is received on this continuation but results in an error.
+             * Invoked when a message is received on this continuation but results in an
+             * error.
              *
              * This callback can return true so that the stream is closed afterwards.
              */
             bool OnStreamError(Aws::Crt::ScopedResource<OperationError> error, RpcError rpcError) override;
         };
-        class SubscribeToIoTCoreOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API SubscribeToIoTCoreOperationContext : public OperationModelContext
         {
           public:
             SubscribeToIoTCoreOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -3310,7 +3550,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class SubscribeToIoTCoreResult
+        class AWS_GREENGRASSCOREIPC_API SubscribeToIoTCoreResult
         {
           public:
             SubscribeToIoTCoreResult() noexcept {}
@@ -3332,7 +3572,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class SubscribeToIoTCoreOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API SubscribeToIoTCoreOperation : public ClientOperation
         {
           public:
             SubscribeToIoTCoreOperation(
@@ -3343,8 +3583,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `SubscribeToIoTCoreOperation`
              * @param request The request used for the `SubscribeToIoTCoreOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const SubscribeToIoTCoreRequest &request,
@@ -3358,7 +3600,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class ResumeComponentOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API ResumeComponentOperationContext : public OperationModelContext
         {
           public:
             ResumeComponentOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -3374,7 +3616,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class ResumeComponentResult
+        class AWS_GREENGRASSCOREIPC_API ResumeComponentResult
         {
           public:
             ResumeComponentResult() noexcept {}
@@ -3396,7 +3638,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class ResumeComponentOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API ResumeComponentOperation : public ClientOperation
         {
           public:
             ResumeComponentOperation(
@@ -3406,8 +3648,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `ResumeComponentOperation`
              * @param request The request used for the `ResumeComponentOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const ResumeComponentRequest &request,
@@ -3421,7 +3665,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class PublishToIoTCoreOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API PublishToIoTCoreOperationContext : public OperationModelContext
         {
           public:
             PublishToIoTCoreOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -3437,7 +3681,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class PublishToIoTCoreResult
+        class AWS_GREENGRASSCOREIPC_API PublishToIoTCoreResult
         {
           public:
             PublishToIoTCoreResult() noexcept {}
@@ -3459,7 +3703,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class PublishToIoTCoreOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API PublishToIoTCoreOperation : public ClientOperation
         {
           public:
             PublishToIoTCoreOperation(
@@ -3469,8 +3713,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `PublishToIoTCoreOperation`
              * @param request The request used for the `PublishToIoTCoreOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const PublishToIoTCoreRequest &request,
@@ -3484,14 +3730,16 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class SubscribeToConfigurationUpdateStreamHandler : public StreamResponseHandler
+        class AWS_GREENGRASSCOREIPC_API SubscribeToConfigurationUpdateStreamHandler : public StreamResponseHandler
         {
           public:
             virtual void OnStreamEvent(ConfigurationUpdateEvents *response) { (void)response; }
 
             /**
-             * A callback that is invoked when an error occurs while parsing a message from the stream.
-             * @param rpcError The RPC error containing the status and possibly a CRT error.
+             * A callback that is invoked when an error occurs while parsing a message
+             * from the stream.
+             * @param rpcError The RPC error containing the status and possibly a CRT
+             * error.
              */
             virtual bool OnStreamError(RpcError rpcError)
             {
@@ -3510,7 +3758,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving an error of type `ResourceNotFoundError`.
+             * A callback that is invoked upon receiving an error of type
+             * `ResourceNotFoundError`.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(ResourceNotFoundError *operationError)
@@ -3520,7 +3769,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving ANY error response from the server.
+             * A callback that is invoked upon receiving ANY error response from the
+             * server.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(OperationError *operationError)
@@ -3535,13 +3785,14 @@ namespace Aws
              */
             void OnStreamEvent(Aws::Crt::ScopedResource<AbstractShapeBase> response) override;
             /**
-             * Invoked when a message is received on this continuation but results in an error.
+             * Invoked when a message is received on this continuation but results in an
+             * error.
              *
              * This callback can return true so that the stream is closed afterwards.
              */
             bool OnStreamError(Aws::Crt::ScopedResource<OperationError> error, RpcError rpcError) override;
         };
-        class SubscribeToConfigurationUpdateOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API SubscribeToConfigurationUpdateOperationContext : public OperationModelContext
         {
           public:
             SubscribeToConfigurationUpdateOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -3557,7 +3808,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class SubscribeToConfigurationUpdateResult
+        class AWS_GREENGRASSCOREIPC_API SubscribeToConfigurationUpdateResult
         {
           public:
             SubscribeToConfigurationUpdateResult() noexcept {}
@@ -3582,7 +3833,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class SubscribeToConfigurationUpdateOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API SubscribeToConfigurationUpdateOperation : public ClientOperation
         {
           public:
             SubscribeToConfigurationUpdateOperation(
@@ -3592,9 +3843,12 @@ namespace Aws
                 Aws::Crt::Allocator *allocator = Aws::Crt::g_allocator) noexcept;
             /**
              * Used to activate a stream for the `SubscribeToConfigurationUpdateOperation`
-             * @param request The request used for the `SubscribeToConfigurationUpdateOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param request The request used for the
+             * `SubscribeToConfigurationUpdateOperation`
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const SubscribeToConfigurationUpdateRequest &request,
@@ -3608,7 +3862,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class DeleteThingShadowOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API DeleteThingShadowOperationContext : public OperationModelContext
         {
           public:
             DeleteThingShadowOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -3624,7 +3878,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class DeleteThingShadowResult
+        class AWS_GREENGRASSCOREIPC_API DeleteThingShadowResult
         {
           public:
             DeleteThingShadowResult() noexcept {}
@@ -3646,7 +3900,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class DeleteThingShadowOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API DeleteThingShadowOperation : public ClientOperation
         {
           public:
             DeleteThingShadowOperation(
@@ -3656,8 +3910,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `DeleteThingShadowOperation`
              * @param request The request used for the `DeleteThingShadowOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const DeleteThingShadowRequest &request,
@@ -3671,7 +3927,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class PutComponentMetricOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API PutComponentMetricOperationContext : public OperationModelContext
         {
           public:
             PutComponentMetricOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -3687,7 +3943,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class PutComponentMetricResult
+        class AWS_GREENGRASSCOREIPC_API PutComponentMetricResult
         {
           public:
             PutComponentMetricResult() noexcept {}
@@ -3709,7 +3965,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class PutComponentMetricOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API PutComponentMetricOperation : public ClientOperation
         {
           public:
             PutComponentMetricOperation(
@@ -3719,8 +3975,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `PutComponentMetricOperation`
              * @param request The request used for the `PutComponentMetricOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const PutComponentMetricRequest &request,
@@ -3734,7 +3992,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class DeferComponentUpdateOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API DeferComponentUpdateOperationContext : public OperationModelContext
         {
           public:
             DeferComponentUpdateOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -3750,7 +4008,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class DeferComponentUpdateResult
+        class AWS_GREENGRASSCOREIPC_API DeferComponentUpdateResult
         {
           public:
             DeferComponentUpdateResult() noexcept {}
@@ -3774,7 +4032,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class DeferComponentUpdateOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API DeferComponentUpdateOperation : public ClientOperation
         {
           public:
             DeferComponentUpdateOperation(
@@ -3784,8 +4042,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `DeferComponentUpdateOperation`
              * @param request The request used for the `DeferComponentUpdateOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const DeferComponentUpdateRequest &request,
@@ -3799,14 +4059,17 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class SubscribeToValidateConfigurationUpdatesStreamHandler : public StreamResponseHandler
+        class AWS_GREENGRASSCOREIPC_API SubscribeToValidateConfigurationUpdatesStreamHandler
+            : public StreamResponseHandler
         {
           public:
             virtual void OnStreamEvent(ValidateConfigurationUpdateEvents *response) { (void)response; }
 
             /**
-             * A callback that is invoked when an error occurs while parsing a message from the stream.
-             * @param rpcError The RPC error containing the status and possibly a CRT error.
+             * A callback that is invoked when an error occurs while parsing a message
+             * from the stream.
+             * @param rpcError The RPC error containing the status and possibly a CRT
+             * error.
              */
             virtual bool OnStreamError(RpcError rpcError)
             {
@@ -3825,7 +4088,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving ANY error response from the server.
+             * A callback that is invoked upon receiving ANY error response from the
+             * server.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(OperationError *operationError)
@@ -3840,13 +4104,15 @@ namespace Aws
              */
             void OnStreamEvent(Aws::Crt::ScopedResource<AbstractShapeBase> response) override;
             /**
-             * Invoked when a message is received on this continuation but results in an error.
+             * Invoked when a message is received on this continuation but results in an
+             * error.
              *
              * This callback can return true so that the stream is closed afterwards.
              */
             bool OnStreamError(Aws::Crt::ScopedResource<OperationError> error, RpcError rpcError) override;
         };
-        class SubscribeToValidateConfigurationUpdatesOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API SubscribeToValidateConfigurationUpdatesOperationContext
+            : public OperationModelContext
         {
           public:
             SubscribeToValidateConfigurationUpdatesOperationContext(
@@ -3863,7 +4129,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class SubscribeToValidateConfigurationUpdatesResult
+        class AWS_GREENGRASSCOREIPC_API SubscribeToValidateConfigurationUpdatesResult
         {
           public:
             SubscribeToValidateConfigurationUpdatesResult() noexcept {}
@@ -3889,7 +4155,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class SubscribeToValidateConfigurationUpdatesOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API SubscribeToValidateConfigurationUpdatesOperation : public ClientOperation
         {
           public:
             SubscribeToValidateConfigurationUpdatesOperation(
@@ -3898,10 +4164,14 @@ namespace Aws
                 const SubscribeToValidateConfigurationUpdatesOperationContext &operationContext,
                 Aws::Crt::Allocator *allocator = Aws::Crt::g_allocator) noexcept;
             /**
-             * Used to activate a stream for the `SubscribeToValidateConfigurationUpdatesOperation`
-             * @param request The request used for the `SubscribeToValidateConfigurationUpdatesOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * Used to activate a stream for the
+             * `SubscribeToValidateConfigurationUpdatesOperation`
+             * @param request The request used for the
+             * `SubscribeToValidateConfigurationUpdatesOperation`
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const SubscribeToValidateConfigurationUpdatesRequest &request,
@@ -3915,7 +4185,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class GetConfigurationOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API GetConfigurationOperationContext : public OperationModelContext
         {
           public:
             GetConfigurationOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -3931,7 +4201,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class GetConfigurationResult
+        class AWS_GREENGRASSCOREIPC_API GetConfigurationResult
         {
           public:
             GetConfigurationResult() noexcept {}
@@ -3953,7 +4223,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class GetConfigurationOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API GetConfigurationOperation : public ClientOperation
         {
           public:
             GetConfigurationOperation(
@@ -3963,8 +4233,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `GetConfigurationOperation`
              * @param request The request used for the `GetConfigurationOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const GetConfigurationRequest &request,
@@ -3978,14 +4250,16 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class SubscribeToTopicStreamHandler : public StreamResponseHandler
+        class AWS_GREENGRASSCOREIPC_API SubscribeToTopicStreamHandler : public StreamResponseHandler
         {
           public:
             virtual void OnStreamEvent(SubscriptionResponseMessage *response) { (void)response; }
 
             /**
-             * A callback that is invoked when an error occurs while parsing a message from the stream.
-             * @param rpcError The RPC error containing the status and possibly a CRT error.
+             * A callback that is invoked when an error occurs while parsing a message
+             * from the stream.
+             * @param rpcError The RPC error containing the status and possibly a CRT
+             * error.
              */
             virtual bool OnStreamError(RpcError rpcError)
             {
@@ -3994,7 +4268,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving an error of type `InvalidArgumentsError`.
+             * A callback that is invoked upon receiving an error of type
+             * `InvalidArgumentsError`.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(InvalidArgumentsError *operationError)
@@ -4014,7 +4289,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving an error of type `UnauthorizedError`.
+             * A callback that is invoked upon receiving an error of type
+             * `UnauthorizedError`.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(UnauthorizedError *operationError)
@@ -4024,7 +4300,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving ANY error response from the server.
+             * A callback that is invoked upon receiving ANY error response from the
+             * server.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(OperationError *operationError)
@@ -4039,13 +4316,14 @@ namespace Aws
              */
             void OnStreamEvent(Aws::Crt::ScopedResource<AbstractShapeBase> response) override;
             /**
-             * Invoked when a message is received on this continuation but results in an error.
+             * Invoked when a message is received on this continuation but results in an
+             * error.
              *
              * This callback can return true so that the stream is closed afterwards.
              */
             bool OnStreamError(Aws::Crt::ScopedResource<OperationError> error, RpcError rpcError) override;
         };
-        class SubscribeToTopicOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API SubscribeToTopicOperationContext : public OperationModelContext
         {
           public:
             SubscribeToTopicOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4061,7 +4339,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class SubscribeToTopicResult
+        class AWS_GREENGRASSCOREIPC_API SubscribeToTopicResult
         {
           public:
             SubscribeToTopicResult() noexcept {}
@@ -4083,7 +4361,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class SubscribeToTopicOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API SubscribeToTopicOperation : public ClientOperation
         {
           public:
             SubscribeToTopicOperation(
@@ -4094,8 +4372,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `SubscribeToTopicOperation`
              * @param request The request used for the `SubscribeToTopicOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const SubscribeToTopicRequest &request,
@@ -4109,7 +4389,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class GetComponentDetailsOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API GetComponentDetailsOperationContext : public OperationModelContext
         {
           public:
             GetComponentDetailsOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4125,7 +4405,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class GetComponentDetailsResult
+        class AWS_GREENGRASSCOREIPC_API GetComponentDetailsResult
         {
           public:
             GetComponentDetailsResult() noexcept {}
@@ -4147,7 +4427,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class GetComponentDetailsOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API GetComponentDetailsOperation : public ClientOperation
         {
           public:
             GetComponentDetailsOperation(
@@ -4157,8 +4437,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `GetComponentDetailsOperation`
              * @param request The request used for the `GetComponentDetailsOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const GetComponentDetailsRequest &request,
@@ -4172,7 +4454,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class GetClientDeviceAuthTokenOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API GetClientDeviceAuthTokenOperationContext : public OperationModelContext
         {
           public:
             GetClientDeviceAuthTokenOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4188,7 +4470,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class GetClientDeviceAuthTokenResult
+        class AWS_GREENGRASSCOREIPC_API GetClientDeviceAuthTokenResult
         {
           public:
             GetClientDeviceAuthTokenResult() noexcept {}
@@ -4213,7 +4495,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class GetClientDeviceAuthTokenOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API GetClientDeviceAuthTokenOperation : public ClientOperation
         {
           public:
             GetClientDeviceAuthTokenOperation(
@@ -4223,8 +4505,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `GetClientDeviceAuthTokenOperation`
              * @param request The request used for the `GetClientDeviceAuthTokenOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const GetClientDeviceAuthTokenRequest &request,
@@ -4238,7 +4522,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class PublishToTopicOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API PublishToTopicOperationContext : public OperationModelContext
         {
           public:
             PublishToTopicOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4254,7 +4538,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class PublishToTopicResult
+        class AWS_GREENGRASSCOREIPC_API PublishToTopicResult
         {
           public:
             PublishToTopicResult() noexcept {}
@@ -4276,7 +4560,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class PublishToTopicOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API PublishToTopicOperation : public ClientOperation
         {
           public:
             PublishToTopicOperation(
@@ -4286,8 +4570,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `PublishToTopicOperation`
              * @param request The request used for the `PublishToTopicOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const PublishToTopicRequest &request,
@@ -4301,14 +4587,16 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class SubscribeToCertificateUpdatesStreamHandler : public StreamResponseHandler
+        class AWS_GREENGRASSCOREIPC_API SubscribeToCertificateUpdatesStreamHandler : public StreamResponseHandler
         {
           public:
             virtual void OnStreamEvent(CertificateUpdateEvent *response) { (void)response; }
 
             /**
-             * A callback that is invoked when an error occurs while parsing a message from the stream.
-             * @param rpcError The RPC error containing the status and possibly a CRT error.
+             * A callback that is invoked when an error occurs while parsing a message
+             * from the stream.
+             * @param rpcError The RPC error containing the status and possibly a CRT
+             * error.
              */
             virtual bool OnStreamError(RpcError rpcError)
             {
@@ -4327,7 +4615,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving an error of type `UnauthorizedError`.
+             * A callback that is invoked upon receiving an error of type
+             * `UnauthorizedError`.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(UnauthorizedError *operationError)
@@ -4337,7 +4626,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving an error of type `InvalidArgumentsError`.
+             * A callback that is invoked upon receiving an error of type
+             * `InvalidArgumentsError`.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(InvalidArgumentsError *operationError)
@@ -4347,7 +4637,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving ANY error response from the server.
+             * A callback that is invoked upon receiving ANY error response from the
+             * server.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(OperationError *operationError)
@@ -4362,13 +4653,14 @@ namespace Aws
              */
             void OnStreamEvent(Aws::Crt::ScopedResource<AbstractShapeBase> response) override;
             /**
-             * Invoked when a message is received on this continuation but results in an error.
+             * Invoked when a message is received on this continuation but results in an
+             * error.
              *
              * This callback can return true so that the stream is closed afterwards.
              */
             bool OnStreamError(Aws::Crt::ScopedResource<OperationError> error, RpcError rpcError) override;
         };
-        class SubscribeToCertificateUpdatesOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API SubscribeToCertificateUpdatesOperationContext : public OperationModelContext
         {
           public:
             SubscribeToCertificateUpdatesOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4384,7 +4676,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class SubscribeToCertificateUpdatesResult
+        class AWS_GREENGRASSCOREIPC_API SubscribeToCertificateUpdatesResult
         {
           public:
             SubscribeToCertificateUpdatesResult() noexcept {}
@@ -4409,7 +4701,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class SubscribeToCertificateUpdatesOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API SubscribeToCertificateUpdatesOperation : public ClientOperation
         {
           public:
             SubscribeToCertificateUpdatesOperation(
@@ -4419,9 +4711,12 @@ namespace Aws
                 Aws::Crt::Allocator *allocator = Aws::Crt::g_allocator) noexcept;
             /**
              * Used to activate a stream for the `SubscribeToCertificateUpdatesOperation`
-             * @param request The request used for the `SubscribeToCertificateUpdatesOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param request The request used for the
+             * `SubscribeToCertificateUpdatesOperation`
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const SubscribeToCertificateUpdatesRequest &request,
@@ -4435,7 +4730,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class VerifyClientDeviceIdentityOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API VerifyClientDeviceIdentityOperationContext : public OperationModelContext
         {
           public:
             VerifyClientDeviceIdentityOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4451,7 +4746,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class VerifyClientDeviceIdentityResult
+        class AWS_GREENGRASSCOREIPC_API VerifyClientDeviceIdentityResult
         {
           public:
             VerifyClientDeviceIdentityResult() noexcept {}
@@ -4476,7 +4771,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class VerifyClientDeviceIdentityOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API VerifyClientDeviceIdentityOperation : public ClientOperation
         {
           public:
             VerifyClientDeviceIdentityOperation(
@@ -4485,9 +4780,12 @@ namespace Aws
                 Aws::Crt::Allocator *allocator = Aws::Crt::g_allocator) noexcept;
             /**
              * Used to activate a stream for the `VerifyClientDeviceIdentityOperation`
-             * @param request The request used for the `VerifyClientDeviceIdentityOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param request The request used for the
+             * `VerifyClientDeviceIdentityOperation`
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const VerifyClientDeviceIdentityRequest &request,
@@ -4501,7 +4799,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class AuthorizeClientDeviceActionOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API AuthorizeClientDeviceActionOperationContext : public OperationModelContext
         {
           public:
             AuthorizeClientDeviceActionOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4517,7 +4815,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class AuthorizeClientDeviceActionResult
+        class AWS_GREENGRASSCOREIPC_API AuthorizeClientDeviceActionResult
         {
           public:
             AuthorizeClientDeviceActionResult() noexcept {}
@@ -4542,7 +4840,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class AuthorizeClientDeviceActionOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API AuthorizeClientDeviceActionOperation : public ClientOperation
         {
           public:
             AuthorizeClientDeviceActionOperation(
@@ -4551,9 +4849,12 @@ namespace Aws
                 Aws::Crt::Allocator *allocator = Aws::Crt::g_allocator) noexcept;
             /**
              * Used to activate a stream for the `AuthorizeClientDeviceActionOperation`
-             * @param request The request used for the `AuthorizeClientDeviceActionOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param request The request used for the
+             * `AuthorizeClientDeviceActionOperation`
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const AuthorizeClientDeviceActionRequest &request,
@@ -4567,7 +4868,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class ListComponentsOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API ListComponentsOperationContext : public OperationModelContext
         {
           public:
             ListComponentsOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4583,7 +4884,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class ListComponentsResult
+        class AWS_GREENGRASSCOREIPC_API ListComponentsResult
         {
           public:
             ListComponentsResult() noexcept {}
@@ -4605,7 +4906,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class ListComponentsOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API ListComponentsOperation : public ClientOperation
         {
           public:
             ListComponentsOperation(
@@ -4615,8 +4916,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `ListComponentsOperation`
              * @param request The request used for the `ListComponentsOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const ListComponentsRequest &request,
@@ -4630,7 +4933,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class CreateDebugPasswordOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API CreateDebugPasswordOperationContext : public OperationModelContext
         {
           public:
             CreateDebugPasswordOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4646,7 +4949,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class CreateDebugPasswordResult
+        class AWS_GREENGRASSCOREIPC_API CreateDebugPasswordResult
         {
           public:
             CreateDebugPasswordResult() noexcept {}
@@ -4668,7 +4971,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class CreateDebugPasswordOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API CreateDebugPasswordOperation : public ClientOperation
         {
           public:
             CreateDebugPasswordOperation(
@@ -4678,8 +4981,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `CreateDebugPasswordOperation`
              * @param request The request used for the `CreateDebugPasswordOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const CreateDebugPasswordRequest &request,
@@ -4693,7 +4998,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class GetThingShadowOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API GetThingShadowOperationContext : public OperationModelContext
         {
           public:
             GetThingShadowOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4709,7 +5014,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class GetThingShadowResult
+        class AWS_GREENGRASSCOREIPC_API GetThingShadowResult
         {
           public:
             GetThingShadowResult() noexcept {}
@@ -4731,7 +5036,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class GetThingShadowOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API GetThingShadowOperation : public ClientOperation
         {
           public:
             GetThingShadowOperation(
@@ -4741,8 +5046,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `GetThingShadowOperation`
              * @param request The request used for the `GetThingShadowOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const GetThingShadowRequest &request,
@@ -4756,7 +5063,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class SendConfigurationValidityReportOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API SendConfigurationValidityReportOperationContext : public OperationModelContext
         {
           public:
             SendConfigurationValidityReportOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4772,7 +5079,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class SendConfigurationValidityReportResult
+        class AWS_GREENGRASSCOREIPC_API SendConfigurationValidityReportResult
         {
           public:
             SendConfigurationValidityReportResult() noexcept {}
@@ -4797,7 +5104,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class SendConfigurationValidityReportOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API SendConfigurationValidityReportOperation : public ClientOperation
         {
           public:
             SendConfigurationValidityReportOperation(
@@ -4805,10 +5112,14 @@ namespace Aws
                 const SendConfigurationValidityReportOperationContext &operationContext,
                 Aws::Crt::Allocator *allocator = Aws::Crt::g_allocator) noexcept;
             /**
-             * Used to activate a stream for the `SendConfigurationValidityReportOperation`
-             * @param request The request used for the `SendConfigurationValidityReportOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * Used to activate a stream for the
+             * `SendConfigurationValidityReportOperation`
+             * @param request The request used for the
+             * `SendConfigurationValidityReportOperation`
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const SendConfigurationValidityReportRequest &request,
@@ -4822,7 +5133,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class UpdateThingShadowOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API UpdateThingShadowOperationContext : public OperationModelContext
         {
           public:
             UpdateThingShadowOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4838,7 +5149,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class UpdateThingShadowResult
+        class AWS_GREENGRASSCOREIPC_API UpdateThingShadowResult
         {
           public:
             UpdateThingShadowResult() noexcept {}
@@ -4860,7 +5171,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class UpdateThingShadowOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API UpdateThingShadowOperation : public ClientOperation
         {
           public:
             UpdateThingShadowOperation(
@@ -4870,8 +5181,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `UpdateThingShadowOperation`
              * @param request The request used for the `UpdateThingShadowOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const UpdateThingShadowRequest &request,
@@ -4885,7 +5198,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class UpdateConfigurationOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API UpdateConfigurationOperationContext : public OperationModelContext
         {
           public:
             UpdateConfigurationOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4901,7 +5214,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class UpdateConfigurationResult
+        class AWS_GREENGRASSCOREIPC_API UpdateConfigurationResult
         {
           public:
             UpdateConfigurationResult() noexcept {}
@@ -4923,7 +5236,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class UpdateConfigurationOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API UpdateConfigurationOperation : public ClientOperation
         {
           public:
             UpdateConfigurationOperation(
@@ -4933,8 +5246,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `UpdateConfigurationOperation`
              * @param request The request used for the `UpdateConfigurationOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const UpdateConfigurationRequest &request,
@@ -4948,7 +5263,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class ValidateAuthorizationTokenOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API ValidateAuthorizationTokenOperationContext : public OperationModelContext
         {
           public:
             ValidateAuthorizationTokenOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -4964,7 +5279,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class ValidateAuthorizationTokenResult
+        class AWS_GREENGRASSCOREIPC_API ValidateAuthorizationTokenResult
         {
           public:
             ValidateAuthorizationTokenResult() noexcept {}
@@ -4989,7 +5304,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class ValidateAuthorizationTokenOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API ValidateAuthorizationTokenOperation : public ClientOperation
         {
           public:
             ValidateAuthorizationTokenOperation(
@@ -4998,9 +5313,12 @@ namespace Aws
                 Aws::Crt::Allocator *allocator = Aws::Crt::g_allocator) noexcept;
             /**
              * Used to activate a stream for the `ValidateAuthorizationTokenOperation`
-             * @param request The request used for the `ValidateAuthorizationTokenOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param request The request used for the
+             * `ValidateAuthorizationTokenOperation`
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const ValidateAuthorizationTokenRequest &request,
@@ -5014,7 +5332,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class RestartComponentOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API RestartComponentOperationContext : public OperationModelContext
         {
           public:
             RestartComponentOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -5030,7 +5348,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class RestartComponentResult
+        class AWS_GREENGRASSCOREIPC_API RestartComponentResult
         {
           public:
             RestartComponentResult() noexcept {}
@@ -5052,7 +5370,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class RestartComponentOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API RestartComponentOperation : public ClientOperation
         {
           public:
             RestartComponentOperation(
@@ -5062,8 +5380,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `RestartComponentOperation`
              * @param request The request used for the `RestartComponentOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const RestartComponentRequest &request,
@@ -5077,7 +5397,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class GetLocalDeploymentStatusOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API GetLocalDeploymentStatusOperationContext : public OperationModelContext
         {
           public:
             GetLocalDeploymentStatusOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -5093,7 +5413,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class GetLocalDeploymentStatusResult
+        class AWS_GREENGRASSCOREIPC_API GetLocalDeploymentStatusResult
         {
           public:
             GetLocalDeploymentStatusResult() noexcept {}
@@ -5118,7 +5438,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class GetLocalDeploymentStatusOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API GetLocalDeploymentStatusOperation : public ClientOperation
         {
           public:
             GetLocalDeploymentStatusOperation(
@@ -5128,8 +5448,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `GetLocalDeploymentStatusOperation`
              * @param request The request used for the `GetLocalDeploymentStatusOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const GetLocalDeploymentStatusRequest &request,
@@ -5143,7 +5465,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class GetSecretValueOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API GetSecretValueOperationContext : public OperationModelContext
         {
           public:
             GetSecretValueOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -5159,7 +5481,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class GetSecretValueResult
+        class AWS_GREENGRASSCOREIPC_API GetSecretValueResult
         {
           public:
             GetSecretValueResult() noexcept {}
@@ -5181,7 +5503,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class GetSecretValueOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API GetSecretValueOperation : public ClientOperation
         {
           public:
             GetSecretValueOperation(
@@ -5191,8 +5513,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `GetSecretValueOperation`
              * @param request The request used for the `GetSecretValueOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const GetSecretValueRequest &request,
@@ -5206,7 +5530,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class UpdateStateOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API UpdateStateOperationContext : public OperationModelContext
         {
           public:
             UpdateStateOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -5222,7 +5546,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class UpdateStateResult
+        class AWS_GREENGRASSCOREIPC_API UpdateStateResult
         {
           public:
             UpdateStateResult() noexcept {}
@@ -5244,7 +5568,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class UpdateStateOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API UpdateStateOperation : public ClientOperation
         {
           public:
             UpdateStateOperation(
@@ -5254,8 +5578,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `UpdateStateOperation`
              * @param request The request used for the `UpdateStateOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const UpdateStateRequest &request,
@@ -5269,7 +5595,74 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class ListNamedShadowsForThingOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API CancelLocalDeploymentOperationContext : public OperationModelContext
+        {
+          public:
+            CancelLocalDeploymentOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
+            Aws::Crt::ScopedResource<AbstractShapeBase> AllocateInitialResponseFromPayload(
+                Aws::Crt::StringView stringView,
+                Aws::Crt::Allocator *allocator = Aws::Crt::g_allocator) const noexcept override;
+            Aws::Crt::ScopedResource<AbstractShapeBase> AllocateStreamingResponseFromPayload(
+                Aws::Crt::StringView stringView,
+                Aws::Crt::Allocator *allocator = Aws::Crt::g_allocator) const noexcept override;
+            Aws::Crt::String GetRequestModelName() const noexcept override;
+            Aws::Crt::String GetInitialResponseModelName() const noexcept override;
+            Aws::Crt::Optional<Aws::Crt::String> GetStreamingResponseModelName() const noexcept override;
+            Aws::Crt::String GetOperationName() const noexcept override;
+        };
+
+        class AWS_GREENGRASSCOREIPC_API CancelLocalDeploymentResult
+        {
+          public:
+            CancelLocalDeploymentResult() noexcept {}
+            CancelLocalDeploymentResult(TaggedResult &&taggedResult) noexcept : m_taggedResult(std::move(taggedResult))
+            {
+            }
+            CancelLocalDeploymentResponse *GetOperationResponse() const noexcept
+            {
+                return static_cast<CancelLocalDeploymentResponse *>(m_taggedResult.GetOperationResponse());
+            }
+            /**
+             * @return true if the response is associated with an expected response;
+             * false if the response is associated with an error.
+             */
+            operator bool() const noexcept { return m_taggedResult == true; }
+            OperationError *GetOperationError() const noexcept { return m_taggedResult.GetOperationError(); }
+            RpcError GetRpcError() const noexcept { return m_taggedResult.GetRpcError(); }
+            ResultType GetResultType() const noexcept { return m_taggedResult.GetResultType(); }
+
+          private:
+            TaggedResult m_taggedResult;
+        };
+
+        class AWS_GREENGRASSCOREIPC_API CancelLocalDeploymentOperation : public ClientOperation
+        {
+          public:
+            CancelLocalDeploymentOperation(
+                ClientConnection &connection,
+                const CancelLocalDeploymentOperationContext &operationContext,
+                Aws::Crt::Allocator *allocator = Aws::Crt::g_allocator) noexcept;
+            /**
+             * Used to activate a stream for the `CancelLocalDeploymentOperation`
+             * @param request The request used for the `CancelLocalDeploymentOperation`
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
+             */
+            std::future<RpcError> Activate(
+                const CancelLocalDeploymentRequest &request,
+                OnMessageFlushCallback onMessageFlushCallback = nullptr) noexcept;
+            /**
+             * Retrieve the result from activating the stream.
+             */
+            std::future<CancelLocalDeploymentResult> GetResult() noexcept;
+
+          protected:
+            Aws::Crt::String GetModelName() const noexcept override;
+        };
+
+        class AWS_GREENGRASSCOREIPC_API ListNamedShadowsForThingOperationContext : public OperationModelContext
         {
           public:
             ListNamedShadowsForThingOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -5285,7 +5678,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class ListNamedShadowsForThingResult
+        class AWS_GREENGRASSCOREIPC_API ListNamedShadowsForThingResult
         {
           public:
             ListNamedShadowsForThingResult() noexcept {}
@@ -5310,7 +5703,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class ListNamedShadowsForThingOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API ListNamedShadowsForThingOperation : public ClientOperation
         {
           public:
             ListNamedShadowsForThingOperation(
@@ -5320,8 +5713,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `ListNamedShadowsForThingOperation`
              * @param request The request used for the `ListNamedShadowsForThingOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const ListNamedShadowsForThingRequest &request,
@@ -5335,14 +5730,16 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class SubscribeToComponentUpdatesStreamHandler : public StreamResponseHandler
+        class AWS_GREENGRASSCOREIPC_API SubscribeToComponentUpdatesStreamHandler : public StreamResponseHandler
         {
           public:
             virtual void OnStreamEvent(ComponentUpdatePolicyEvents *response) { (void)response; }
 
             /**
-             * A callback that is invoked when an error occurs while parsing a message from the stream.
-             * @param rpcError The RPC error containing the status and possibly a CRT error.
+             * A callback that is invoked when an error occurs while parsing a message
+             * from the stream.
+             * @param rpcError The RPC error containing the status and possibly a CRT
+             * error.
              */
             virtual bool OnStreamError(RpcError rpcError)
             {
@@ -5361,7 +5758,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving an error of type `ResourceNotFoundError`.
+             * A callback that is invoked upon receiving an error of type
+             * `ResourceNotFoundError`.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(ResourceNotFoundError *operationError)
@@ -5371,7 +5769,8 @@ namespace Aws
             }
 
             /**
-             * A callback that is invoked upon receiving ANY error response from the server.
+             * A callback that is invoked upon receiving ANY error response from the
+             * server.
              * @param operationError The error message being received.
              */
             virtual bool OnStreamError(OperationError *operationError)
@@ -5386,13 +5785,14 @@ namespace Aws
              */
             void OnStreamEvent(Aws::Crt::ScopedResource<AbstractShapeBase> response) override;
             /**
-             * Invoked when a message is received on this continuation but results in an error.
+             * Invoked when a message is received on this continuation but results in an
+             * error.
              *
              * This callback can return true so that the stream is closed afterwards.
              */
             bool OnStreamError(Aws::Crt::ScopedResource<OperationError> error, RpcError rpcError) override;
         };
-        class SubscribeToComponentUpdatesOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API SubscribeToComponentUpdatesOperationContext : public OperationModelContext
         {
           public:
             SubscribeToComponentUpdatesOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -5408,7 +5808,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class SubscribeToComponentUpdatesResult
+        class AWS_GREENGRASSCOREIPC_API SubscribeToComponentUpdatesResult
         {
           public:
             SubscribeToComponentUpdatesResult() noexcept {}
@@ -5433,7 +5833,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class SubscribeToComponentUpdatesOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API SubscribeToComponentUpdatesOperation : public ClientOperation
         {
           public:
             SubscribeToComponentUpdatesOperation(
@@ -5443,9 +5843,12 @@ namespace Aws
                 Aws::Crt::Allocator *allocator = Aws::Crt::g_allocator) noexcept;
             /**
              * Used to activate a stream for the `SubscribeToComponentUpdatesOperation`
-             * @param request The request used for the `SubscribeToComponentUpdatesOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param request The request used for the
+             * `SubscribeToComponentUpdatesOperation`
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const SubscribeToComponentUpdatesRequest &request,
@@ -5459,7 +5862,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class ListLocalDeploymentsOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API ListLocalDeploymentsOperationContext : public OperationModelContext
         {
           public:
             ListLocalDeploymentsOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -5475,7 +5878,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class ListLocalDeploymentsResult
+        class AWS_GREENGRASSCOREIPC_API ListLocalDeploymentsResult
         {
           public:
             ListLocalDeploymentsResult() noexcept {}
@@ -5499,7 +5902,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class ListLocalDeploymentsOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API ListLocalDeploymentsOperation : public ClientOperation
         {
           public:
             ListLocalDeploymentsOperation(
@@ -5509,8 +5912,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `ListLocalDeploymentsOperation`
              * @param request The request used for the `ListLocalDeploymentsOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const ListLocalDeploymentsRequest &request,
@@ -5524,7 +5929,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class StopComponentOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API StopComponentOperationContext : public OperationModelContext
         {
           public:
             StopComponentOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -5540,7 +5945,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class StopComponentResult
+        class AWS_GREENGRASSCOREIPC_API StopComponentResult
         {
           public:
             StopComponentResult() noexcept {}
@@ -5562,7 +5967,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class StopComponentOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API StopComponentOperation : public ClientOperation
         {
           public:
             StopComponentOperation(
@@ -5572,8 +5977,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `StopComponentOperation`
              * @param request The request used for the `StopComponentOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const StopComponentRequest &request,
@@ -5587,7 +5994,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class PauseComponentOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API PauseComponentOperationContext : public OperationModelContext
         {
           public:
             PauseComponentOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -5603,7 +6010,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class PauseComponentResult
+        class AWS_GREENGRASSCOREIPC_API PauseComponentResult
         {
           public:
             PauseComponentResult() noexcept {}
@@ -5625,7 +6032,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class PauseComponentOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API PauseComponentOperation : public ClientOperation
         {
           public:
             PauseComponentOperation(
@@ -5635,8 +6042,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `PauseComponentOperation`
              * @param request The request used for the `PauseComponentOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const PauseComponentRequest &request,
@@ -5650,7 +6059,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class CreateLocalDeploymentOperationContext : public OperationModelContext
+        class AWS_GREENGRASSCOREIPC_API CreateLocalDeploymentOperationContext : public OperationModelContext
         {
           public:
             CreateLocalDeploymentOperationContext(const GreengrassCoreIpcServiceModel &serviceModel) noexcept;
@@ -5666,7 +6075,7 @@ namespace Aws
             Aws::Crt::String GetOperationName() const noexcept override;
         };
 
-        class CreateLocalDeploymentResult
+        class AWS_GREENGRASSCOREIPC_API CreateLocalDeploymentResult
         {
           public:
             CreateLocalDeploymentResult() noexcept {}
@@ -5690,7 +6099,7 @@ namespace Aws
             TaggedResult m_taggedResult;
         };
 
-        class CreateLocalDeploymentOperation : public ClientOperation
+        class AWS_GREENGRASSCOREIPC_API CreateLocalDeploymentOperation : public ClientOperation
         {
           public:
             CreateLocalDeploymentOperation(
@@ -5700,8 +6109,10 @@ namespace Aws
             /**
              * Used to activate a stream for the `CreateLocalDeploymentOperation`
              * @param request The request used for the `CreateLocalDeploymentOperation`
-             * @param onMessageFlushCallback An optional callback that is invoked when the request is flushed.
-             * @return An `RpcError` that can be used to check whether the stream was activated.
+             * @param onMessageFlushCallback An optional callback that is invoked when the
+             * request is flushed.
+             * @return An `RpcError` that can be used to check whether the stream was
+             * activated.
              */
             std::future<RpcError> Activate(
                 const CreateLocalDeploymentRequest &request,
@@ -5715,7 +6126,7 @@ namespace Aws
             Aws::Crt::String GetModelName() const noexcept override;
         };
 
-        class GreengrassCoreIpcServiceModel : public ServiceModel
+        class AWS_GREENGRASSCOREIPC_API GreengrassCoreIpcServiceModel : public ServiceModel
         {
           public:
             GreengrassCoreIpcServiceModel() noexcept;
@@ -5755,6 +6166,7 @@ namespace Aws
             GetLocalDeploymentStatusOperationContext m_getLocalDeploymentStatusOperationContext;
             GetSecretValueOperationContext m_getSecretValueOperationContext;
             UpdateStateOperationContext m_updateStateOperationContext;
+            CancelLocalDeploymentOperationContext m_cancelLocalDeploymentOperationContext;
             ListNamedShadowsForThingOperationContext m_listNamedShadowsForThingOperationContext;
             SubscribeToComponentUpdatesOperationContext m_subscribeToComponentUpdatesOperationContext;
             ListLocalDeploymentsOperationContext m_listLocalDeploymentsOperationContext;

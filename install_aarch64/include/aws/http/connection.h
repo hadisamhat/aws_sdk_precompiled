@@ -8,8 +8,11 @@
 
 #include <aws/http/http.h>
 
+AWS_PUSH_SANE_WARNING_LEVEL
+
 struct aws_client_bootstrap;
 struct aws_socket_options;
+struct aws_socket_endpoint;
 struct aws_tls_connection_options;
 struct aws_http2_setting;
 struct proxy_env_var_settings;
@@ -513,6 +516,12 @@ AWS_HTTP_API
 struct aws_channel *aws_http_connection_get_channel(struct aws_http_connection *connection);
 
 /**
+ * Returns the remote endpoint of the HTTP connection.
+ */
+AWS_HTTP_API
+const struct aws_socket_endpoint *aws_http_connection_get_remote_endpoint(const struct aws_http_connection *connection);
+
+/**
  * Initialize an map copied from the *src map, which maps `struct aws_string *` to `enum aws_http_version`.
  */
 AWS_HTTP_API
@@ -681,5 +690,6 @@ AWS_HTTP_API
 void aws_http2_connection_update_window(struct aws_http_connection *http2_connection, uint32_t increment_size);
 
 AWS_EXTERN_C_END
+AWS_POP_SANE_WARNING_LEVEL
 
 #endif /* AWS_HTTP_CONNECTION_H */

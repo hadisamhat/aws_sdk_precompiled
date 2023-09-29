@@ -11,6 +11,7 @@
 #include <aws/crt/io/TlsOptions.h>
 
 #include <aws/mqtt/client.h>
+#include <aws/mqtt/v5/mqtt5_client.h>
 
 #include <atomic>
 #include <functional>
@@ -30,10 +31,52 @@ namespace Aws
             class HttpRequest;
         }
 
+        namespace Mqtt5
+        {
+            class Mqtt5ClientCore;
+        }
+
         namespace Mqtt
         {
             class MqttClient;
             class MqttConnection;
+
+            /**
+             * The data returned when the connection closed callback is invoked in a connection.
+             * Note: This class is currently empty, but this may contain data in the future.
+             */
+            struct OnConnectionClosedData
+            {
+            };
+
+            /**
+             * The data returned when the connection success callback is invoked in a connection.
+             */
+            struct OnConnectionSuccessData
+            {
+                /**
+                 * The Connect return code received from the server.
+                 */
+                ReturnCode returnCode;
+
+                /**
+                 * Returns whether a session was present and resumed for this successful connection.
+                 * Will be set to true if the connection resumed an already present MQTT connection session.
+                 */
+                bool sessionPresent;
+            };
+
+            /**
+             * The data returned when the connection failure callback is invoked in a connection.
+             */
+            struct OnConnectionFailureData
+            {
+                /**
+                 * The AWS CRT error code for the connection failure.
+                 * Use Aws::Crt::ErrorDebugString to get a human readable string from the error code.
+                 */
+                int error;
+            };
 
             /**
              * Invoked Upon Connection loss.
@@ -51,6 +94,31 @@ namespace Aws
              */
             using OnConnectionCompletedHandler = std::function<
                 void(MqttConnection &connection, int errorCode, ReturnCode returnCode, bool sessionPresent)>;
+
+            /**
+             * Invoked when a connection is disconnected and shutdown successfully.
+             *
+             * Note: Currently callbackData will always be nullptr, but this may change in the future to send additional
+             * data.
+             */
+            using OnConnectionClosedHandler =
+                std::function<void(MqttConnection &connection, OnConnectionClosedData *callbackData)>;
+
+            /**
+             * Invoked whenever the connection successfully connects.
+             *
+             * This callback is invoked for every successful connect and every successful reconnect.
+             */
+            using OnConnectionSuccessHandler =
+                std::function<void(MqttConnection &connection, OnConnectionSuccessData *callbackData)>;
+
+            /**
+             * Invoked whenever the connection fails to connect.
+             *
+             * This callback is invoked for every failed connect and every failed reconnect.
+             */
+            using OnConnectionFailureHandler =
+                std::function<void(MqttConnection &connection, OnConnectionFailureData *callbackData)>;
 
             /**
              * Invoked when a suback message is received.
@@ -75,13 +143,13 @@ namespace Aws
 
             /**
              * Invoked upon receipt of a Publish message on a subscribed topic.
-             * @param connection    The connection object
-             * @param topic         The information channel to which the payload data was published.
-             * @param payload       The payload data.
-             * @param dup           DUP flag. If true, this might be re-delivery of an earlier
+             * - connection:    The connection object
+             * - topic:         The information channel to which the payload data was published.
+             * - payload:       The payload data.
+             * - dup:           DUP flag. If true, this might be re-delivery of an earlier
              *                      attempt to send the message.
-             * @param qos           Quality of Service used to deliver the message.
-             * @param retain        Retain flag. If true, the message was sent as a result of
+             * - qos:           Quality of Service used to deliver the message.
+             * - retain:        Retain flag. If true, the message was sent as a result of
              *                      a new subscription being made by the client.
              */
             using OnMessageReceivedHandler = std::function<void(
@@ -150,7 +218,8 @@ namespace Aws
             };
 
             /**
-             * Represents a persistent Mqtt Connection. The memory is owned by MqttClient.
+             * Represents a persistent Mqtt Connection. The memory is owned by MqttClient or
+             * Mqtt5Client.
              * To get a new instance of this class, see MqttClient::NewConnection. Unless
              * specified all function arguments need only to live through the duration of the
              * function call.
@@ -158,6 +227,7 @@ namespace Aws
             class AWS_CRT_CPP_API MqttConnection final
             {
                 friend class MqttClient;
+                friend class Mqtt5::Mqtt5ClientCore;
 
               public:
                 ~MqttConnection();
@@ -365,6 +435,9 @@ namespace Aws
                 OnConnectionCompletedHandler OnConnectionCompleted;
                 OnDisconnectHandler OnDisconnect;
                 OnWebSocketHandshakeIntercept WebsocketInterceptor;
+                OnConnectionClosedHandler OnConnectionClosed;
+                OnConnectionSuccessHandler OnConnectionSuccess;
+                OnConnectionFailureHandler OnConnectionFailure;
 
               private:
                 aws_mqtt_client *m_owningClient;
@@ -379,6 +452,7 @@ namespace Aws
                 bool m_useTls;
                 bool m_useWebsocket;
                 MqttConnectionOperationStatistics m_operationStatistics;
+                Allocator *m_allocator;
 
                 MqttConnection(
                     aws_mqtt_client *client,
@@ -395,6 +469,23 @@ namespace Aws
                     const Io::SocketOptions &socketOptions,
                     bool useWebsocket) noexcept;
 
+                MqttConnection(
+                    aws_mqtt5_client *mqtt5Client,
+                    const char *hostName,
+                    uint16_t port,
+                    const Io::SocketOptions &socketOptions,
+                    const Crt::Io::TlsConnectionOptions &tlsConnectionOptions,
+                    bool useWebsocket,
+                    Allocator *allocator) noexcept;
+
+                MqttConnection(
+                    aws_mqtt5_client *mqtt5Client,
+                    const char *hostName,
+                    uint16_t port,
+                    const Io::SocketOptions &socketOptions,
+                    bool useWebsocket,
+                    Allocator *allocator) noexcept;
+
                 static void s_onConnectionInterrupted(aws_mqtt_client_connection *, int errorCode, void *userData);
                 static void s_onConnectionCompleted(
                     aws_mqtt_client_connection *,
@@ -402,10 +493,24 @@ namespace Aws
                     enum aws_mqtt_connect_return_code returnCode,
                     bool sessionPresent,
                     void *userData);
+
+                static void s_onConnectionSuccess(
+                    aws_mqtt_client_connection *,
+                    ReturnCode returnCode,
+                    bool sessionPresent,
+                    void *userData);
+
+                static void s_onConnectionFailure(aws_mqtt_client_connection *, int errorCode, void *userData);
+
                 static void s_onConnectionResumed(
                     aws_mqtt_client_connection *,
                     ReturnCode returnCode,
                     bool sessionPresent,
+                    void *userData);
+
+                static void s_onConnectionClosed(
+                    aws_mqtt_client_connection *,
+                    on_connection_closed_data *data,
                     void *userData);
 
                 static void s_onDisconnect(aws_mqtt_client_connection *connection, void *userData);
@@ -447,7 +552,8 @@ namespace Aws
                     MqttConnection *self,
                     const char *hostName,
                     uint16_t port,
-                    const Io::SocketOptions &socketOptions);
+                    const Io::SocketOptions &socketOptions,
+                    aws_mqtt5_client *mqtt5Client = nullptr);
             };
 
             /**
